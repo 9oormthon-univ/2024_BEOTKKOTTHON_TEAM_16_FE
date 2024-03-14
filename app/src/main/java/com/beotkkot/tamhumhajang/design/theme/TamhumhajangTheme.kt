@@ -3,7 +3,7 @@ package com.beotkkot.tamhumhajang.design.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 
-object ThhjTheme {
+object TamhumhajangTheme {
     val colors: Colors
         @Composable
         @ReadOnlyComposable
