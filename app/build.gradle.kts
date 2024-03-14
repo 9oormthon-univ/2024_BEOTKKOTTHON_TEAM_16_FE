@@ -13,18 +13,29 @@ val properties = Properties().apply {
 
 android {
     namespace = "com.beotkkot.tamhumhajang"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.beotkkot.tamhumhajang"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        signingConfig = signingConfigs.getByName("debug")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = properties["SIGNED_KEY_ALIAS"] as String?
+            keyPassword = properties["SIGNED_KEY_PASSWORD"] as String?
+            storeFile = properties["SIGNED_STORE_FILE"]?.let { file(it) }
+            storePassword = properties["SIGNED_STORE_PASSWORD"] as String?
         }
     }
 

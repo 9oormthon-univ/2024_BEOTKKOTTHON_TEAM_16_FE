@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui.theme
+package com.beotkkot.tamhumhajang.design.theme
 
 import androidx.compose.ui.graphics.Color
 

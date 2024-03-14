@@ -1,14 +1,13 @@
-package com.beotkkot.tamhumhajang.ui.theme
+package com.beotkkot.tamhumhajang.design.theme
 
-import androidx.compose.material3.Typography
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
+data class Typography(
+    val bodyLarge: TextStyle = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
@@ -16,14 +15,14 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     /* Other default text styles to override
-    titleLarge = TextStyle(
+    val titleLarge: TextStyle = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
+    val labelSmall: TextStyle = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
@@ -32,3 +31,5 @@ val Typography = Typography(
     )
     */
 )
+
+val LocalTypography = staticCompositionLocalOf { fonts() }
