@@ -107,7 +107,7 @@ private fun Modifier.Companion.bottomBarPadding(
     currentDestination: NavDestination?,
     padding: PaddingValues
 ): Modifier {
-    return if (currentDestination?.route in listOf("map")
+    return if (currentDestination?.route in listOf("")
     ) {
         Modifier
     } else {

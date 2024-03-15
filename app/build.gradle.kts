@@ -11,6 +11,12 @@ val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 android {
     namespace = "com.beotkkot.tamhumhajang"
     compileSdk = 34
@@ -23,6 +29,12 @@ android {
         versionName = "1.0"
 
         signingConfig = signingConfigs.getByName("debug")
+
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            properties["KAKAO_NATIVE_APP_KEY"] as String
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -57,6 +69,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -115,4 +128,7 @@ dependencies {
     // OkHttp3
     implementation ("com.squareup.okhttp3:okhttp:4.11.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    // KakaoMap
+    implementation("com.kakao.maps.open:android:2.9.5")
 }
