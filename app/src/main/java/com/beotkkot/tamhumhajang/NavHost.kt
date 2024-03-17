@@ -21,6 +21,8 @@ import androidx.navigation.compose.composable
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationBar
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationItem
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapScreen
+import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapViewModel
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
 import com.beotkkot.tamhumhajang.ui.map.MapViewModel
 
@@ -51,7 +53,7 @@ fun NavHost() {
                     .statusBarsPadding()
                     .navigationBarsPadding(),
                 navController = navController,
-                startDestination = "map"
+                startDestination = "kakaomap"
             ) {
                 composable(
                     route = "map"
@@ -63,6 +65,12 @@ fun NavHost() {
                         bottomSheetState = bottomSheetState,
                         viewModel = viewModel
                     )
+                }
+
+                composable(route = "kakaomap") {
+                    val viewModel: KakaoMapViewModel = hiltViewModel()
+
+                    KakaoMapScreen(appState = appState, bottomSheetState = bottomSheetState, viewModel = viewModel)
                 }
             }
         }

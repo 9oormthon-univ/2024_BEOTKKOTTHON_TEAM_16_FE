@@ -28,7 +28,8 @@ fun rememberAppState(
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
-    cameraPositionState: CameraPositionState = rememberCameraPositionState()
+    cameraPositionState: CameraPositionState = rememberCameraPositionState(),
+    kakaoCameraPositionState: com.beotkkot.kakaomap_compose.state.CameraPositionState = com.beotkkot.kakaomap_compose.state.rememberCameraPositionState()
 ): AppState {
     return remember(Unit) {
         AppState(
@@ -36,7 +37,8 @@ fun rememberAppState(
             navController,
             scaffoldState,
             scope,
-            cameraPositionState
+            cameraPositionState,
+            kakaoCameraPositionState
         )
     }
 }
@@ -47,7 +49,8 @@ class AppState(
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
-    val cameraPositionState: CameraPositionState
+    val cameraPositionState: CameraPositionState,
+    val kakaoCameraPositionState: com.beotkkot.kakaomap_compose.state.CameraPositionState
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController

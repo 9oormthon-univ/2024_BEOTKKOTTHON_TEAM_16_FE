@@ -31,6 +31,12 @@ android {
 
         signingConfig = signingConfigs.getByName("debug")
 
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            properties["KAKAO_NATIVE_APP_KEY"] as String
+        )
+
         resValue(
             "string",
             "NAVER_CLIENT_ID",
@@ -82,6 +88,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":kakaomap-compose"))
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -136,6 +143,9 @@ dependencies {
     // NaverMap
     implementation("io.github.fornewid:naver-map-compose:1.3.3")
     implementation("io.github.fornewid:naver-map-location:16.0.0")
+
+    // KakaoMap
+    implementation("com.kakao.maps.open:android:2.9.5")
 
     implementation("com.google.android.gms:play-services-location:21.2.0")
 }
