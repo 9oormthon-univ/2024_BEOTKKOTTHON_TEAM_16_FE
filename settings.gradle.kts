@@ -10,9 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://devrepo.kakao.com/nexus/repository/kakaomap-releases/")
-        }
+        maven { url = uri("https://naver.jfrog.io/artifactory/maven/") }
     }
 }
 

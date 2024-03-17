@@ -1,9 +1,5 @@
 package com.beotkkot.tamhumhajang
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -18,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationBar
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationItem
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.beotkkot.tamhumhajang.ui.home.HomeScreen
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
-import com.beotkkot.tamhumhajang.ui.profile.ProfileScreen
+import com.beotkkot.tamhumhajang.ui.map.MapViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,54 +43,25 @@ fun NavHost() {
             backgroundColor = TamhumhajangTheme.colors.white,
             snackbarHost = {
                 SnackBar(appState)
-            },
-            bottomBar = {
-                AnimatedVisibility(
-                    appState.shouldShowBottomBar,
-                    enter = slideInVertically { it },
-                    exit = slideOutVertically { it },
-                ) {
-                    WineyBottomNavigationBar(
-                        destinations = appState.topLevelDestination,
-                        currentDestination = appState.currentDestination,
-                        onNavigateToDestination = appState::navigateToTopLevelDestination
-                    )
-                }
             }
         ) { padding ->
-
             NavHost(
                 modifier = Modifier
-                    .bottomBarPadding(appState.currentDestination, padding)
+                    .padding(padding)
                     .statusBarsPadding()
                     .navigationBarsPadding(),
                 navController = navController,
-                startDestination = "home"
+                startDestination = "map"
             ) {
-                composable(
-                    route = "home"
-                ) {
-                    HomeScreen(
-                        appState = appState,
-                        bottomSheetState = bottomSheetState
-                    )
-                }
-
                 composable(
                     route = "map"
                 ) {
+                    val viewModel: MapViewModel = hiltViewModel()
+
                     MapScreen(
                         appState = appState,
-                        bottomSheetState = bottomSheetState
-                    )
-                }
-                
-                composable(
-                    route = "profile"
-                ) {
-                    ProfileScreen(
-                        appState = appState,
-                        bottomSheetState = bottomSheetState
+                        bottomSheetState = bottomSheetState,
+                        viewModel = viewModel
                     )
                 }
             }
@@ -103,26 +70,12 @@ fun NavHost() {
 }
 
 @Composable
-private fun Modifier.Companion.bottomBarPadding(
-    currentDestination: NavDestination?,
-    padding: PaddingValues
-): Modifier {
-    return if (currentDestination?.route in listOf("")
-    ) {
-        Modifier
-    } else {
-        Modifier.padding(padding)
-    }
-}
-
-
-@Composable
 private fun SnackBar(appState: AppState) {
     SnackbarHost(hostState = appState.scaffoldState.snackbarHostState,
         snackbar = { data ->
             Snackbar(
                 modifier = Modifier.padding(
-                    bottom = 50.dp,
+                    bottom = 30.dp,
                     start = 20.dp,
                     end = 20.dp
                 )

@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 val properties = Properties().apply {
@@ -30,10 +31,10 @@ android {
 
         signingConfig = signingConfigs.getByName("debug")
 
-        buildConfigField(
-            "String",
-            "KAKAO_NATIVE_APP_KEY",
-            properties["KAKAO_NATIVE_APP_KEY"] as String
+        resValue(
+            "string",
+            "NAVER_CLIENT_ID",
+            properties["NAVER_CLIENT_ID"] as String
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -69,7 +70,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -85,6 +85,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
@@ -98,6 +99,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-analytics")
 
     // GSON
     implementation("com.google.code.gson:gson:2.10.1")
@@ -113,7 +117,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.50")
@@ -126,9 +130,12 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // OkHttp3
-    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
-    // KakaoMap
-    implementation("com.kakao.maps.open:android:2.9.5")
+    // NaverMap
+    implementation("io.github.fornewid:naver-map-compose:1.3.3")
+    implementation("io.github.fornewid:naver-map-location:16.0.0")
+
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 }
