@@ -17,6 +17,8 @@ import androidx.navigation.Navigator
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.naver.maps.map.compose.CameraPositionState
+import com.naver.maps.map.compose.rememberCameraPositionState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -26,6 +28,8 @@ fun rememberAppState(
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
+    cameraPositionState: CameraPositionState = rememberCameraPositionState(),
+    kakaoCameraPositionState: com.beotkkot.kakaomap_compose.state.CameraPositionState = com.beotkkot.kakaomap_compose.state.rememberCameraPositionState()
 ): AppState {
     return remember(Unit) {
         AppState(
@@ -33,6 +37,8 @@ fun rememberAppState(
             navController,
             scaffoldState,
             scope,
+            cameraPositionState,
+            kakaoCameraPositionState
         )
     }
 }
@@ -43,6 +49,8 @@ class AppState(
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
+    val cameraPositionState: CameraPositionState,
+    val kakaoCameraPositionState: com.beotkkot.kakaomap_compose.state.CameraPositionState
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
