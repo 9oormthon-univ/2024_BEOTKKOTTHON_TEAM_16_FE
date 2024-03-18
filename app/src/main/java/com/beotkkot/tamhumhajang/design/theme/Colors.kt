@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 
 class Colors(
     color_ffffff: Color = Color(0xFFFFFFFF),
-    color_000000: Color = Color(0x00000000),
+    color_000000: Color = Color(0xFF000000),
     color_9ddb80: Color = Color(0xFF9DDB80),
     color_eaf8e4: Color = Color(0xFFEAF8E4),
     color_0fa958: Color = Color(0xFF0FA958),

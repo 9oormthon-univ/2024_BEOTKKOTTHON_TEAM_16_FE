@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationBar
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationItem
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.ui.LoginScreen
 import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapScreen
 import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapViewModel
@@ -60,6 +61,12 @@ fun NavHost() {
                     route = "splash"
                 ) {
                     SplashScreen(appState = appState)
+                }
+                
+                composable(
+                    route = "login"
+                ) {
+                    LoginScreen(appState = appState)
                 }
                 
                 composable(

@@ -20,7 +20,7 @@ fun SplashScreen(
 ) {
     LaunchedEffect(true) {
         delay(2000)
-        appState.navigate("kakaomap")
+        appState.navigate("login")
     }
 
     Box(

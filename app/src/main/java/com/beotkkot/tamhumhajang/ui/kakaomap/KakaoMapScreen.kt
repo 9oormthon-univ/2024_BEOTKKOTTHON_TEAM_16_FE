@@ -2,9 +2,13 @@ package com.beotkkot.tamhumhajang.ui.kakaomap
 
 import android.location.Location
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -24,6 +28,7 @@ import com.beotkkot.kakaomap_compose.overlay.Label
 import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.map.ManageLocationPermission
 import com.beotkkot.tamhumhajang.ui.map.MovingCameraWrapper
 import com.kakao.vectormap.LatLng
@@ -102,43 +107,174 @@ fun KakaoMapScreen(
         ) {
             Label(
                 position = uiState.userPosition,
-                iconResId = R.drawable.img_current_location,
+                iconResId = R.drawable.img_explorer_level_1,
                 tag = "나"
             ) {
 
             }
         }
 
-        CurrentPositionIcon(
-            enabled = uiState.isFixedPerspective
+        Row(
+            modifier = Modifier.align(Alignment.TopEnd).padding(end = 16.dp, top = 6.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            viewModel.updateIsFixedPerspective(!uiState.isFixedPerspective)
+            BookButton {
+
+            }
+
+            BookmarkButton {
+
+            }
+        }
+
+        Column(
+            modifier = Modifier.padding(end = 14.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            QuestButton {
+
+            }
+
+            ShopButton {
+
+            }
+
+            TrackingButton(
+                isTracking = uiState.isFixedPerspective
+            ) {
+                viewModel.updateIsFixedPerspective(!uiState.isFixedPerspective)
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun CurrentPositionIcon(
+private fun BookButton(
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = modifier
-            .padding(end = 14.dp, bottom = 28.dp),
+        modifier = modifier.size(48.dp),
         shape = RoundedCornerShape(10.dp),
-        color = if (enabled) Color.Green else Color.White,
+        color = TamhumhajangTheme.colors.color_ffffff,
         elevation = 10.dp,
         onClick = onClick
     ) {
         Box(
-            modifier = Modifier.padding(7.dp)
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_current_location),
+                painter = painterResource(R.drawable.ic_book),
+                contentDescription = "IC_BOOK",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun BookmarkButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier.size(48.dp),
+        shape = RoundedCornerShape(10.dp),
+        color = TamhumhajangTheme.colors.color_ffffff,
+        elevation = 10.dp,
+        onClick = onClick
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_star),
+                contentDescription = "IC_STAR",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun QuestButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier.size(48.dp),
+        shape = RoundedCornerShape(10.dp),
+        color = TamhumhajangTheme.colors.color_ffffff,
+        elevation = 10.dp,
+        onClick = onClick
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_quest),
+                contentDescription = "IC_QUEST",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun ShopButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier.size(48.dp),
+        shape = RoundedCornerShape(10.dp),
+        color = TamhumhajangTheme.colors.color_ffffff,
+        elevation = 10.dp,
+        onClick = onClick
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_shop),
+                contentDescription = "IC_SHOP",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun TrackingButton(
+    modifier: Modifier = Modifier,
+    isTracking: Boolean = true,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier.size(48.dp),
+        shape = RoundedCornerShape(10.dp),
+        color = if (isTracking) TamhumhajangTheme.colors.color_0fa958 else TamhumhajangTheme.colors.color_ffffff,
+        elevation = 10.dp,
+        onClick = onClick
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = if (isTracking) R.drawable.ic_current_location_enabled else  R.drawable.ic_current_location_disabled),
                 contentDescription = "IC_CURRENT_LOCATION",
-                tint = if (enabled) Color.White else Color.Unspecified
+                tint = if (isTracking) Color.White else Color.Unspecified
             )
         }
     }
