@@ -42,7 +42,7 @@ fun NavHost() {
         modifier = Modifier.navigationBarsPadding()
     ) {
         Scaffold(
-            backgroundColor = TamhumhajangTheme.colors.white,
+            backgroundColor = TamhumhajangTheme.colors.color_ffffff,
             snackbarHost = {
                 SnackBar(appState)
             }
@@ -100,7 +100,7 @@ private fun WineyBottomNavigationBar(
     destinations: List<TopLevelDestination>,
     currentDestination: NavDestination?,
     onNavigateToDestination: (TopLevelDestination) -> Unit,
-    backgroundColor: Color = TamhumhajangTheme.colors.white,
+    backgroundColor: Color = TamhumhajangTheme.colors.color_ffffff,
     selectedContentColor: Color = Color(0xFF1A1E27),
     unselectedContentColor: Color = Color(0xFFDADADA)
 ) {

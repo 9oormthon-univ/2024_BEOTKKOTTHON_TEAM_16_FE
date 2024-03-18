@@ -49,7 +49,7 @@ fun BottomNavigationItem(
 
             Text(
                 text = label,
-                style = TamhumhajangTheme.typography.bodyLarge,
+                style = TamhumhajangTheme.typography.body2,
                 color = contentColor
             )
         }

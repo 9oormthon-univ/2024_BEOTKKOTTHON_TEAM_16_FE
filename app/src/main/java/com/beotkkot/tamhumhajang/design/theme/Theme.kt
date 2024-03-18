@@ -36,7 +36,7 @@ fun TamhumhajangTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.white.toArgb()
+            window.statusBarColor = colors.color_ffffff.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

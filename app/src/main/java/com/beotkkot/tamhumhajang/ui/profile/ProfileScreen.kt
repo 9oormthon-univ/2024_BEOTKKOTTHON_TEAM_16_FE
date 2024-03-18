@@ -17,7 +17,7 @@ fun ProfileScreen(
 ) {
     Column(
         modifier = Modifier.fillMaxSize().background(
-            color = TamhumhajangTheme.colors.white
+            color = TamhumhajangTheme.colors.color_ffffff
         )
     ) {
         Text(
