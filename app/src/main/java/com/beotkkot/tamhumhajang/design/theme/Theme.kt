@@ -28,7 +28,7 @@ fun TamhumhajangTheme(
         LocalColors provides rememberedColors,
         LocalTypography provides typography
     ) {
-        ProvideTextStyle(typography.bodyLarge, content = content)
+        ProvideTextStyle(typography.body2, content = content)
     }
 
     val view = LocalView.current
@@ -36,7 +36,7 @@ fun TamhumhajangTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.white.toArgb()
+            window.statusBarColor = colors.color_ffffff.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

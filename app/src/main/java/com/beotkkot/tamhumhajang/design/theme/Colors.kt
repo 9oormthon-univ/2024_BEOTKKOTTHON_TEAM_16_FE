@@ -7,55 +7,61 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 class Colors(
-    white: Color = Color(0xFFFFFFF),
-    purple80: Color = Color(0xFFD0BCFF),
-    purpleGrey80: Color = Color(0xFFCCC2DC),
-    pink80: Color = Color(0xFFEFB8C8),
-    purple40: Color = Color(0xFF6650a4),
-    purpleGrey40: Color = Color(0xFF625b71),
-    pink40: Color = Color(0xFF7D5260)
+    color_ffffff: Color = Color(0xFFFFFFFF),
+    color_000000: Color = Color(0x00000000),
+    color_9ddb80: Color = Color(0xFF9DDB80),
+    color_eaf8e4: Color = Color(0xFFEAF8E4),
+    color_0fa958: Color = Color(0xFF0FA958),
+    color_e0f3d7: Color = Color(0xFFE0F3D7),
+    color_bebebe: Color = Color(0xFFBEBEBE),
+    color_d9d9d9: Color = Color(0xFFD9D9D9)
 ) {
-    var white by mutableStateOf(white)
+    var color_ffffff by mutableStateOf(color_ffffff)
         private set
-    var purple80 by mutableStateOf(purple80)
+    var color_000000 by mutableStateOf(color_000000)
         private set
-    var purpleGrey80 by mutableStateOf(purpleGrey80)
+    var color_9ddb80 by mutableStateOf(color_9ddb80)
         private set
-    var pink80 by mutableStateOf(pink80)
+    var color_eaf8e4 by mutableStateOf(color_eaf8e4)
         private set
-    var purple40 by mutableStateOf(purple40)
+    var color_0fa958 by mutableStateOf(color_0fa958)
         private set
-    var purpleGrey40 by mutableStateOf(purpleGrey40)
+    var color_e0f3d7 by mutableStateOf(color_e0f3d7)
         private set
-    var pink40 by mutableStateOf(pink40)
+    var color_bebebe by mutableStateOf(color_bebebe)
+        private set
+    var color_d9d9d9 by mutableStateOf(color_d9d9d9)
         private set
 
     fun copy(
-        white: Color = this.white,
-        purple80: Color = this.purple80,
-        purpleGrey80: Color = this.purpleGrey80,
-        pink80: Color = this.pink80,
-        purple40: Color = this.purple40,
-        purpleGrey40: Color = this.purpleGrey40,
-        pink40: Color = this.pink40
+        color_ffffff: Color = this.color_ffffff,
+        color_000000: Color = this.color_000000,
+        color_9ddb80: Color = this.color_9ddb80,
+        color_eaf8e4: Color = this.color_eaf8e4,
+        color_0fa958: Color = this.color_0fa958,
+        color_e0f3d7: Color = this.color_e0f3d7,
+        color_bebebe: Color = this.color_bebebe,
+        color_d9d9d9: Color = this.color_d9d9d9
     ) = Colors(
-        white = white,
-        purple80 = purple80,
-        purpleGrey80 = purpleGrey80,
-        pink80 = pink80,
-        purple40 = purple40,
-        purpleGrey40 = purpleGrey40,
-        pink40 = pink40
+        color_ffffff = color_ffffff,
+        color_000000 = color_000000,
+        color_9ddb80 = color_9ddb80,
+        color_eaf8e4 = color_eaf8e4,
+        color_0fa958 = color_0fa958,
+        color_e0f3d7 = color_e0f3d7,
+        color_bebebe = color_bebebe,
+        color_d9d9d9 = color_d9d9d9
     )
 
     fun updateColorFrom(other: Colors) {
-        white = other.white
-        purple80 = other.purple80
-        purpleGrey80 = other.purpleGrey80
-        pink80 = other.pink80
-        purple40 = other.purple40
-        purpleGrey40 = other.purpleGrey40
-        pink40 = other.pink40
+        color_ffffff = other.color_ffffff
+        color_000000 = other.color_000000
+        color_9ddb80 = other.color_9ddb80
+        color_eaf8e4 = other.color_eaf8e4
+        color_0fa958 = other.color_0fa958
+        color_e0f3d7 = other.color_e0f3d7
+        color_bebebe = other.color_bebebe
+        color_d9d9d9 = other.color_d9d9d9
     }
 }
 

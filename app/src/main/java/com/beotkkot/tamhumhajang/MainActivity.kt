@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
             TamhumhajangTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = TamhumhajangTheme.colors.white
+                    color = TamhumhajangTheme.colors.color_ffffff
                 ) {
                     NavHost()
                 }
