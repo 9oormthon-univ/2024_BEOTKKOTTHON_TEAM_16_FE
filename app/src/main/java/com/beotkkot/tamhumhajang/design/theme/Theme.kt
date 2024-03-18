@@ -28,7 +28,7 @@ fun TamhumhajangTheme(
         LocalColors provides rememberedColors,
         LocalTypography provides typography
     ) {
-        ProvideTextStyle(typography.bodyLarge, content = content)
+        ProvideTextStyle(typography.body2, content = content)
     }
 
     val view = LocalView.current
