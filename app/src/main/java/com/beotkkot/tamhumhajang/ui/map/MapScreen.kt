@@ -129,7 +129,7 @@ fun MapScreen(
             ) {
                 Marker(
                     state = MarkerState(position = uiState.userPosition),
-                    icon = OverlayImage.fromResource(R.drawable.ic_current_location),
+                    icon = OverlayImage.fromResource(R.drawable.ic_current_location_disabled),
                     captionText = "나",
                     height = 30.dp,
                     width = 30.dp,
@@ -167,7 +167,7 @@ private fun CurrentPositionIcon(
             modifier = Modifier.padding(7.dp)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_current_location),
+                painter = painterResource(id = R.drawable.ic_current_location_disabled),
                 contentDescription = "IC_CURRENT_LOCATION",
                 tint = if (enabled) Color.White else Color.Unspecified
             )
