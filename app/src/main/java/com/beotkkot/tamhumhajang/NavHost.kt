@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationBar
 import com.beotkkot.tamhumhajang.design.component.BottomNavigationItem
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapScreen
 import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapViewModel
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
@@ -53,8 +54,14 @@ fun NavHost() {
                     .statusBarsPadding()
                     .navigationBarsPadding(),
                 navController = navController,
-                startDestination = "kakaomap"
+                startDestination = "splash"
             ) {
+                composable(
+                    route = "splash"
+                ) {
+                    SplashScreen(appState = appState)
+                }
+                
                 composable(
                     route = "map"
                 ) {
