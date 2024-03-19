@@ -17,11 +17,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.LOGIN
 import com.beotkkot.tamhumhajang.ui.LoginScreen
 import com.beotkkot.tamhumhajang.ui.MAP
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
+import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkScreen
 import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapScreen
 import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapViewModel
 
@@ -66,6 +68,10 @@ fun NavHost() {
                     val viewModel: KakaoMapViewModel = hiltViewModel()
 
                     KakaoMapScreen(appState = appState, bottomSheetState = bottomSheetState, viewModel = viewModel)
+                }
+
+                composable(BOOKMARK) {
+                    BookmarkScreen(appState = appState, bottomSheetState = bottomSheetState)
                 }
             }
         }

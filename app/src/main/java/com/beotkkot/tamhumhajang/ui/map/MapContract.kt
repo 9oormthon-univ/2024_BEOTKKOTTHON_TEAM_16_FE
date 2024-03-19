@@ -4,6 +4,7 @@ import androidx.navigation.NavOptions
 import com.beotkkot.tamhumhajang.common.UiEffect
 import com.beotkkot.tamhumhajang.common.UiEvent
 import com.beotkkot.tamhumhajang.common.UiState
+import com.beotkkot.tamhumhajang.ui.kakaomap.MovingCameraWrapper
 import com.naver.maps.geometry.LatLng
 
 class MapContract {

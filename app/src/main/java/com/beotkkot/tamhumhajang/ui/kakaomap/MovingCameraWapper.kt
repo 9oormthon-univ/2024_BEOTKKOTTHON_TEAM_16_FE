@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui.map
+package com.beotkkot.tamhumhajang.ui.kakaomap
 
 import android.location.Location
 

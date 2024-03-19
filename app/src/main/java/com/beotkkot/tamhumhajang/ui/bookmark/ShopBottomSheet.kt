@@ -37,6 +37,7 @@ fun ShopBottomSheet(
     isBookmarked: Boolean = true,
     address: String = "서울 송파구 마천동, 상인 3호점",
     category: String = "채소 상점",
+    imgUrl: String = "",
     tags: List<String> = listOf("양상추", "시금치", "콩나물"),
     onBookmark: (Int) -> Unit = { }
 ) {
@@ -121,7 +122,7 @@ fun ShopBottomSheet(
 
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(R.drawable.img_dummy_shop)
+                    .data(imgUrl.ifEmpty { R.drawable.img_dummy_shop })
                     .build(),
                 contentDescription = "IMG_WINE",
                 modifier = Modifier

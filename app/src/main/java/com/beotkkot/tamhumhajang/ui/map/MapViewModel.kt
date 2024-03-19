@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import com.beotkkot.tamhumhajang.common.BaseViewModel
+import com.beotkkot.tamhumhajang.ui.kakaomap.MovingCameraWrapper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

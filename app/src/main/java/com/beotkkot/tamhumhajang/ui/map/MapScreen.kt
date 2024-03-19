@@ -25,6 +25,8 @@ import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.ui.kakaomap.ManageLocationPermission
+import com.beotkkot.tamhumhajang.ui.kakaomap.MovingCameraWrapper
 import com.beotkkot.tamhumhajang.ui.map.MapContract.Companion.DEFAULT_LATLNG
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -35,6 +37,7 @@ import com.naver.maps.map.compose.MapUiSettings
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
+import com.naver.maps.map.compose.rememberCameraPositionState
 import com.naver.maps.map.overlay.OverlayImage
 import kotlinx.coroutines.delay
 
@@ -47,6 +50,8 @@ fun MapScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    val cameraPositionState = rememberCameraPositionState()
 
     ManageLocationPermission(
         addLocationListener = viewModel::addLocationListener,
@@ -61,7 +66,7 @@ fun MapScreen(
             }
 
             is MovingCameraWrapper.MOVING -> {
-                appState.cameraPositionState.animate(
+                cameraPositionState.animate(
                     update = CameraUpdate.scrollTo(LatLng(movingCameraPosition.location))
                 )
                 viewModel.updateIsFixedPerspective(false)
@@ -76,7 +81,7 @@ fun MapScreen(
         while (true) {
             delay(100)
             if (uiState.isFixedPerspective) {
-                appState.cameraPositionState.animate(
+                cameraPositionState.animate(
                     update = CameraUpdate.scrollAndZoomTo(
                         uiState.userPosition,
                         15.0
@@ -101,7 +106,7 @@ fun MapScreen(
         ) {
             NaverMap(
                 modifier = Modifier.fillMaxSize(),
-                cameraPositionState = appState.cameraPositionState,
+                cameraPositionState = cameraPositionState,
                 properties = MapProperties(
                     locationTrackingMode = LocationTrackingMode.Follow
                 ),
