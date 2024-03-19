@@ -25,25 +25,28 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beotkkot.kakaomap_compose.KakaoMap
 import com.beotkkot.kakaomap_compose.overlay.Label
+import com.beotkkot.kakaomap_compose.state.rememberCameraPositionState
 import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.beotkkot.tamhumhajang.ui.map.ManageLocationPermission
-import com.beotkkot.tamhumhajang.ui.map.MovingCameraWrapper
+import com.beotkkot.tamhumhajang.ui.BOOKMARK
+import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
 import kotlinx.coroutines.delay
 
 @Composable
-fun KakaoMapScreen(
+fun MapScreen(
     appState: AppState,
     bottomSheetState: BottomSheetState,
-    viewModel: KakaoMapViewModel
+    viewModel: MapViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    val cameraPositionState = rememberCameraPositionState()
 
     ManageLocationPermission(
         addLocationListener = viewModel::addLocationListener,
@@ -58,7 +61,7 @@ fun KakaoMapScreen(
             }
 
             is MovingCameraWrapper.MOVING -> {
-                appState.kakaoCameraPositionState.move(
+                cameraPositionState.move(
                     CameraUpdateFactory.newCenterPosition(LatLng.from(movingCameraPosition.location.latitude, movingCameraPosition.location.longitude)),
                     CameraAnimation.from(100, true, true)
                 )
@@ -74,7 +77,7 @@ fun KakaoMapScreen(
             Log.d("debugging", "이동 : ${uiState.isFixedPerspective}")
 
             if (uiState.isFixedPerspective) {
-                appState.kakaoCameraPositionState.move(
+                cameraPositionState.move(
                     CameraUpdateFactory.newCenterPosition(uiState.userPosition),
                     CameraAnimation.from(100, true, true)
                 )
@@ -90,10 +93,10 @@ fun KakaoMapScreen(
     ) {
         KakaoMap(
             modifier = Modifier.fillMaxSize(),
-            cameraPositionState = appState.kakaoCameraPositionState,
+            cameraPositionState = cameraPositionState,
             onMapReady = {
-                if (KakaoMapViewModel.initialMarkerLoadFlag && uiState.userPosition != KakaoMapContract.DEFAULT_LATLNG) {
-                    KakaoMapViewModel.initialMarkerLoadFlag = false
+                if (MapViewModel.initialMarkerLoadFlag && uiState.userPosition != MapContract.DEFAULT_LATLNG) {
+                    MapViewModel.initialMarkerLoadFlag = false
                     viewModel.updateMovingCameraPosition(
                         MovingCameraWrapper.MOVING(
                             Location("UserPosition").apply {
@@ -112,10 +115,23 @@ fun KakaoMapScreen(
             ) {
 
             }
+
+            Label(
+                position = LatLng.from(uiState.userPosition.latitude + 0.0005, uiState.userPosition.longitude + 0.0005),
+                iconResId = R.drawable.img_shop_location,
+                tag = "나",
+                onClick = {
+                    bottomSheetState.showBottomSheet {
+                        ShopBottomSheet()
+                    }
+                }
+            )
         }
 
         Row(
-            modifier = Modifier.align(Alignment.TopEnd).padding(end = 16.dp, top = 6.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = 16.dp, top = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             BookButton {
@@ -123,7 +139,7 @@ fun KakaoMapScreen(
             }
 
             BookmarkButton {
-
+                appState.navigate(BOOKMARK)
             }
         }
 

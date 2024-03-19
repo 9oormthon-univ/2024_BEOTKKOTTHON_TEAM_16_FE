@@ -58,7 +58,7 @@ fun LoginScreen(
            BasicTextField(
                value = nickname,
                onValueChange = {
-                   nickname = it
+                   if (nickname.length <= 8) nickname = it
                },
                singleLine = true,
                cursorBrush = SolidColor(Color.White),
@@ -102,7 +102,7 @@ fun LoginScreen(
                ),
                contentPadding = PaddingValues(vertical = 13.dp),
                onClick = {
-                   appState.navigate("kakaomap")
+                   appState.navigate(MAP)
                }
            ) {
                Text(
