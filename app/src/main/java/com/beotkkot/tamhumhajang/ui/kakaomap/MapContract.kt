@@ -1,11 +1,10 @@
-package com.beotkkot.tamhumhajang.ui.map
+package com.beotkkot.tamhumhajang.ui.kakaomap
 
 import androidx.navigation.NavOptions
 import com.beotkkot.tamhumhajang.common.UiEffect
 import com.beotkkot.tamhumhajang.common.UiEvent
 import com.beotkkot.tamhumhajang.common.UiState
-import com.beotkkot.tamhumhajang.ui.kakaomap.MovingCameraWrapper
-import com.naver.maps.geometry.LatLng
+import com.kakao.vectormap.LatLng
 
 class MapContract {
 
@@ -29,6 +28,6 @@ class MapContract {
     }
 
     companion object {
-        val DEFAULT_LATLNG = LatLng(37.5437, 127.0659)
+        val DEFAULT_LATLNG = LatLng.from(37.5437, 127.0659)
     }
 }

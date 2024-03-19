@@ -24,8 +24,8 @@ import com.beotkkot.tamhumhajang.ui.MAP
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkScreen
-import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapScreen
-import com.beotkkot.tamhumhajang.ui.kakaomap.KakaoMapViewModel
+import com.beotkkot.tamhumhajang.ui.kakaomap.MapScreen
+import com.beotkkot.tamhumhajang.ui.kakaomap.MapViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -65,9 +65,9 @@ fun NavHost() {
                 }
 
                 composable(MAP) {
-                    val viewModel: KakaoMapViewModel = hiltViewModel()
+                    val viewModel: MapViewModel = hiltViewModel()
 
-                    KakaoMapScreen(appState = appState, bottomSheetState = bottomSheetState, viewModel = viewModel)
+                    MapScreen(appState = appState, bottomSheetState = bottomSheetState, viewModel = viewModel)
                 }
 
                 composable(BOOKMARK) {
