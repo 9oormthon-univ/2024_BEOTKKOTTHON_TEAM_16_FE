@@ -31,16 +31,17 @@ import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
+import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
 import kotlinx.coroutines.delay
 
 @Composable
-fun KakaoMapScreen(
+fun MapScreen(
     appState: AppState,
     bottomSheetState: BottomSheetState,
-    viewModel: KakaoMapViewModel
+    viewModel: MapViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -94,8 +95,8 @@ fun KakaoMapScreen(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             onMapReady = {
-                if (KakaoMapViewModel.initialMarkerLoadFlag && uiState.userPosition != KakaoMapContract.DEFAULT_LATLNG) {
-                    KakaoMapViewModel.initialMarkerLoadFlag = false
+                if (MapViewModel.initialMarkerLoadFlag && uiState.userPosition != MapContract.DEFAULT_LATLNG) {
+                    MapViewModel.initialMarkerLoadFlag = false
                     viewModel.updateMovingCameraPosition(
                         MovingCameraWrapper.MOVING(
                             Location("UserPosition").apply {
@@ -114,6 +115,17 @@ fun KakaoMapScreen(
             ) {
 
             }
+
+            Label(
+                position = LatLng.from(uiState.userPosition.latitude + 0.0005, uiState.userPosition.longitude + 0.0005),
+                iconResId = R.drawable.img_shop_location,
+                tag = "나",
+                onClick = {
+                    bottomSheetState.showBottomSheet {
+                        ShopBottomSheet()
+                    }
+                }
+            )
         }
 
         Row(

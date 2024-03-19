@@ -17,17 +17,17 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class KakaoMapViewModel @Inject constructor(
+class MapViewModel @Inject constructor(
     @ApplicationContext private val context: Context
-) : BaseViewModel<KakaoMapContract.State, KakaoMapContract.Event, KakaoMapContract.Effect>(
-    initialState = KakaoMapContract.State()
+) : BaseViewModel<MapContract.State, MapContract.Event, MapContract.Effect>(
+    initialState = MapContract.State()
 ) {
 
     companion object {
         var initialMarkerLoadFlag = true
     }
 
-    override fun reduceState(event: KakaoMapContract.Event) {
+    override fun reduceState(event: MapContract.Event) {
         TODO("Not yet implemented")
     }
 
