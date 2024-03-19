@@ -20,7 +20,9 @@ fun SplashScreen(
 ) {
     LaunchedEffect(true) {
         delay(2000)
-        appState.navigate("login")
+        appState.navigate(LOGIN) {
+            popUpTo(SPLASH) { inclusive = true }
+        }
     }
 
     Box(

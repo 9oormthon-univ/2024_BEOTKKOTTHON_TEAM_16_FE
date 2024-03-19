@@ -115,7 +115,9 @@ fun KakaoMapScreen(
         }
 
         Row(
-            modifier = Modifier.align(Alignment.TopEnd).padding(end = 16.dp, top = 6.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = 16.dp, top = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             BookButton {
