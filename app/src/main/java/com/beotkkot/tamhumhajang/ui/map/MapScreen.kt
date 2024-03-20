@@ -33,7 +33,7 @@ import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
-import com.beotkkot.tamhumhajang.ui.popup.LevelUpPopup
+import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
@@ -103,12 +103,10 @@ fun MapScreen(
         }
     }
 
+    FirstBadgePopup(onClick = { /*TODO*/ }) {
 
-    LevelUpPopup(
-        onClick = { },
-        onClose = { }
-    )
-
+    }
+    
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
