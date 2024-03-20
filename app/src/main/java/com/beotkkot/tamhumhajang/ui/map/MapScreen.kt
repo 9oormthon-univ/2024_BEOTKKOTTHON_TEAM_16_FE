@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui.kakaomap
+package com.beotkkot.tamhumhajang.ui.map
 
 import android.location.Location
 import android.util.Log
@@ -32,6 +32,7 @@ import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
+import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
@@ -86,6 +87,13 @@ fun MapScreen(
             }
         }
     }
+
+    if (uiState.showRecommendShopPopup) {
+        RecommendMarketPopup {
+            viewModel.updateShowRecommendShopPopup(false)
+        }
+    }
+
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -152,7 +160,7 @@ fun MapScreen(
             }
 
             ShopButton {
-
+                viewModel.updateShowRecommendShopPopup(true)
             }
 
             TrackingButton(

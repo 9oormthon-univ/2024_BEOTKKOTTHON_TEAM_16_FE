@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui.kakaomap
+package com.beotkkot.tamhumhajang.ui.map
 
 import android.Manifest
 import android.content.Context
@@ -50,6 +50,10 @@ class MapViewModel @Inject constructor(
 
     fun updateIsFixedPerspective(isFixed: Boolean) {
         updateState(currentState.copy(isFixedPerspective = isFixed))
+    }
+
+    fun updateShowRecommendShopPopup(isShow: Boolean) {
+        updateState(currentState.copy(showRecommendShopPopup = isShow))
     }
 
     inner class CustomLocationCallback : LocationCallback() {
