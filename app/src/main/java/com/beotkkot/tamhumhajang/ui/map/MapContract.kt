@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui.kakaomap
+package com.beotkkot.tamhumhajang.ui.map
 
 import androidx.navigation.NavOptions
 import com.beotkkot.tamhumhajang.common.UiEffect
@@ -12,7 +12,8 @@ class MapContract {
         val isLoading: Boolean = false,
         val userPosition: LatLng = DEFAULT_LATLNG,
         val movingCameraPosition: MovingCameraWrapper = MovingCameraWrapper.DEFAULT,
-        val isFixedPerspective: Boolean = false
+        val isFixedPerspective: Boolean = false,
+        val showRecommendShopPopup: Boolean = false
     ) : UiState
 
     sealed class Event : UiEvent {

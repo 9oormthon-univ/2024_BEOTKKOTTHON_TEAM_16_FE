@@ -24,8 +24,8 @@ import com.beotkkot.tamhumhajang.ui.MAP
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkScreen
-import com.beotkkot.tamhumhajang.ui.kakaomap.MapScreen
-import com.beotkkot.tamhumhajang.ui.kakaomap.MapViewModel
+import com.beotkkot.tamhumhajang.ui.map.MapScreen
+import com.beotkkot.tamhumhajang.ui.map.MapViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

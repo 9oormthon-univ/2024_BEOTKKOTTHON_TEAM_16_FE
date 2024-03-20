@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui.kakaomap
+package com.beotkkot.tamhumhajang.ui.map
 
 import android.Manifest
 import android.content.pm.PackageManager
