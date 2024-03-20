@@ -1,6 +1,5 @@
 package com.beotkkot.tamhumhajang.ui.popup
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,22 +15,35 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.model.BadgePopup
+
+val badgePopupDummy = BadgePopup(
+    title = "탐색의 시작 배지 획득\uD83D\uDD25",
+    description = "시장의 첫 탐색의 시작을 축하드립니다!\n탐색의 시작 배지를 획득하셨어요.",
+    imgUrl = "",
+    positive = "이어서 탐험하기",
+    negative = "도감 이동하기"
+)
 
 @Composable
-fun FirstBadgePopup(
-    onClick: () -> Unit,
+fun BadgePopup(
+    popup: BadgePopup = badgePopupDummy,
+    onConfirm: () -> Unit,
+    navigateToProfile: () -> Unit,
     onClose: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Dialog(
         onDismissRequest = onClose,
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -47,7 +59,7 @@ fun FirstBadgePopup(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "첫 배지 획득\uD83D\uDD25",
+                text = popup.title,
                 style = TamhumhajangTheme.typography.largeTitle.copy(
                     color = TamhumhajangTheme.colors.color_000000
                 )
@@ -56,12 +68,7 @@ fun FirstBadgePopup(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(color = TamhumhajangTheme.colors.color_0fa958)) {
-                        append("용감한 탐험가")
-                    }
-                    append("가 되신 것을 축하드립니다!\n탐험가 배지를 획득하셨어요.")
-                },
+                text = popup.description,
                 style = TamhumhajangTheme.typography.title2Description.copy(
                     color = TamhumhajangTheme.colors.color_000000
                 ),
@@ -70,37 +77,49 @@ fun FirstBadgePopup(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Image(
-                painter = painterResource(id = R.drawable.img_brave_explorer),
-                contentDescription = "IMG_BRAVE_EXPLORER"
+            AsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(popup.imgUrl.ifEmpty { R.drawable.img_brave_explorer })
+                    .build(),
+                contentDescription = "IMG_BADGE",
+                contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.height(40.dp))
-
-            Text(
-                text = "시장을 바로 탐색하시겠습니까?",
-                style = TamhumhajangTheme.typography.body1.copy(
-                    color = TamhumhajangTheme.colors.color_000000
-                ),
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(35.dp))
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = TamhumhajangTheme.colors.color_9ddb80,
-                    contentColor = TamhumhajangTheme.colors.color_ffffff
+                    contentColor = TamhumhajangTheme.colors.color_9ddb80
                 ),
                 contentPadding = PaddingValues(vertical = 13.dp),
-                onClick = { onClick() }
+                onClick = { onConfirm() }
             ) {
                 Text(
-                    text = "탐색하기",
+                    text = "이어서 탐색하기",
                     style = TamhumhajangTheme.typography.title3,
                     color = TamhumhajangTheme.colors.color_ffffff
+                )
+            }
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = TamhumhajangTheme.colors.color_bebebe,
+                    contentColor = TamhumhajangTheme.colors.color_9ddb80
+                ),
+                contentPadding = PaddingValues(vertical = 13.dp),
+                onClick = { navigateToProfile() }
+            ) {
+                Text(
+                    text = "도감 이동하기",
+                    style = TamhumhajangTheme.typography.title3,
+                    color = TamhumhajangTheme.colors.color_000000
                 )
             }
         }
