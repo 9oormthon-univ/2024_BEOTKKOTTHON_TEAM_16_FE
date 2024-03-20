@@ -33,6 +33,7 @@ import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
+import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
@@ -92,6 +93,12 @@ fun MapScreen(
     if (uiState.showRecommendShopPopup) {
         RecommendMarketPopup {
             viewModel.updateShowRecommendShopPopup(false)
+        }
+    }
+
+    if (uiState.showQuestPopup) {
+        QuestListPopup {
+            viewModel.updateShowQuestPopup(false)
         }
     }
 
@@ -157,7 +164,7 @@ fun MapScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             QuestButton {
-
+                viewModel.updateShowQuestPopup(true)
             }
 
             ShopButton {
