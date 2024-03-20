@@ -31,6 +31,7 @@ import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
+import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
@@ -143,7 +144,7 @@ fun MapScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             BookButton {
-
+                appState.navigate(PROFILE)
             }
 
             BookmarkButton {
