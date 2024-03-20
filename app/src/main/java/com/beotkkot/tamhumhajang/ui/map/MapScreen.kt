@@ -31,7 +31,10 @@ import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
+import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
+import com.beotkkot.tamhumhajang.ui.popup.BadgePopup
+import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
@@ -94,7 +97,19 @@ fun MapScreen(
         }
     }
 
+    if (uiState.showQuestPopup) {
+        QuestListPopup {
+            viewModel.updateShowQuestPopup(false)
+        }
+    }
 
+    BadgePopup(
+        onConfirm = { /*TODO*/ },
+        navigateToProfile = { appState.navigate(PROFILE)}
+    ) {
+
+    }
+    
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomEnd
@@ -143,7 +158,7 @@ fun MapScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             BookButton {
-
+                appState.navigate(PROFILE)
             }
 
             BookmarkButton {
@@ -156,7 +171,7 @@ fun MapScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             QuestButton {
-
+                viewModel.updateShowQuestPopup(true)
             }
 
             ShopButton {

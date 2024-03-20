@@ -21,11 +21,13 @@ import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.LOGIN
 import com.beotkkot.tamhumhajang.ui.LoginScreen
 import com.beotkkot.tamhumhajang.ui.MAP
+import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkScreen
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
 import com.beotkkot.tamhumhajang.ui.map.MapViewModel
+import com.beotkkot.tamhumhajang.ui.profile.ProfileScreen
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -72,6 +74,10 @@ fun NavHost() {
 
                 composable(BOOKMARK) {
                     BookmarkScreen(appState = appState, bottomSheetState = bottomSheetState)
+                }
+
+                composable(PROFILE) {
+                    ProfileScreen(appState = appState, bottomSheetState = bottomSheetState)
                 }
             }
         }

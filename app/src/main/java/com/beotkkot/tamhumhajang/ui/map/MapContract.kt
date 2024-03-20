@@ -13,7 +13,8 @@ class MapContract {
         val userPosition: LatLng = DEFAULT_LATLNG,
         val movingCameraPosition: MovingCameraWrapper = MovingCameraWrapper.DEFAULT,
         val isFixedPerspective: Boolean = false,
-        val showRecommendShopPopup: Boolean = false
+        val showRecommendShopPopup: Boolean = false,
+        val showQuestPopup: Boolean = false
     ) : UiState
 
     sealed class Event : UiEvent {
