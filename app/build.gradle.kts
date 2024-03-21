@@ -148,4 +148,7 @@ dependencies {
     implementation("com.kakao.maps.open:android:2.9.5")
 
     implementation("com.google.android.gms:play-services-location:21.2.0")
+
+    // Onboarding
+    implementation ("com.google.accompanist:accompanist-pager:0.34.0")
 }
