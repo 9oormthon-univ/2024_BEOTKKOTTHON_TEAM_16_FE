@@ -10,7 +10,6 @@ import com.beotkkot.tamhumhajang.common.BaseViewModel
 import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
-import com.beotkkot.tamhumhajang.data.di.PersistenceModule
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -56,10 +55,42 @@ class MapViewModel @Inject constructor(
     init {
         val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
         updateState(currentState.copy(sequence = sequence))
+
+        getShopsLocation()
     }
 
-    fun getRecommendMarkets() = viewModelScope.launch {
-        val userId = runBlocking { dataStoreRepository.getIntValue(PersistenceModule.USER_ID).first() }
+    fun getShopsLocation() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        apiRepository.getShops(userId).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.shops
+
+                    updateState(
+                        currentState.copy(
+                            shops = result,
+                            badgePosition = it.data.badgePosition
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun showRecommendMarkets() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
 
         apiRepository.getRecommendMarkets(userId).onStart {
             updateState(currentState.copy(isLoading = true))
@@ -88,7 +119,7 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun getQuests() = viewModelScope.launch {
+    fun showQuests() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
         val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
 

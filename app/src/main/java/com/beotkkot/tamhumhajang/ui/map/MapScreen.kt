@@ -113,7 +113,7 @@ fun MapScreen(
 
                     if (uiState.sequence == 0) {
                         delay(2000)
-                        viewModel.getQuests()
+                        viewModel.showQuests()
                     }
                 }
             }
@@ -132,11 +132,11 @@ fun MapScreen(
         FirstBadgePopup(
             onClick = {
                 viewModel.updateShowFirstBadgePopup(false)
-                viewModel.getRecommendMarkets()
+                viewModel.showRecommendMarkets()
             },
             onClose = {
                 viewModel.updateShowFirstBadgePopup(false)
-                viewModel.getRecommendMarkets()
+                viewModel.showRecommendMarkets()
             }
         )
     }
@@ -171,16 +171,36 @@ fun MapScreen(
 
             }
 
-            Label(
-                position = LatLng.from(uiState.userPosition.latitude + 0.0005, uiState.userPosition.longitude + 0.0005),
-                iconResId = R.drawable.img_shop_location,
-                tag = "나",
-                onClick = {
-                    bottomSheetState.showBottomSheet {
-                        ShopBottomSheet()
+            uiState.shops.forEach { shop ->
+                Label(
+                    position = LatLng.from(shop.latitude, shop.longitude),
+                    iconResId = R.drawable.img_shop_location,
+                    tag = "가게",
+                    onClick = {
+                        bottomSheetState.showBottomSheet {
+                            ShopBottomSheet(
+                                id = shop.id,
+                                title = shop.name,
+                                isBookmarked = false,
+                                address = shop.address,
+                                category = shop.category,
+                                imgUrl = shop.imgUrl,
+                                tags = shop.tags
+                            ) {
+                                // TODO : 북마크 API 연동
+                            }
+                        }
                     }
-                }
-            )
+                )
+            }
+
+            if (uiState.badgePosition.latitude != null && uiState.badgePosition.longitude != null) {
+                Label(
+                    position = LatLng.from(uiState.badgePosition.latitude!!, uiState.badgePosition.longitude!!),
+                    iconResId = R.drawable.img_badge_location,
+                    tag = "뱃지"
+                )
+            }
         }
 
         Row(
@@ -203,11 +223,11 @@ fun MapScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             QuestButton {
-                viewModel.getQuests()
+                viewModel.showQuests()
             }
 
             ShopButton {
-                viewModel.getRecommendMarkets()
+                viewModel.showRecommendMarkets()
             }
 
             TrackingButton(

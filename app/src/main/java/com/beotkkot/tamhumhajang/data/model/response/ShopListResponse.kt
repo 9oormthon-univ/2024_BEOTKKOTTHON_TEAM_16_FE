@@ -21,7 +21,7 @@ data class Shop(
     @SerializedName("category")
     val category: String,
     @SerializedName("tags")
-    val tags: List<Int>,
+    val tags: List<String>,
     @SerializedName("latitude")
     val latitude: Double,
     @SerializedName("longitude")
