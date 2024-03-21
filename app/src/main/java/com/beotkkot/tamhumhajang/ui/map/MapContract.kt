@@ -4,6 +4,9 @@ import androidx.navigation.NavOptions
 import com.beotkkot.tamhumhajang.common.UiEffect
 import com.beotkkot.tamhumhajang.common.UiEvent
 import com.beotkkot.tamhumhajang.common.UiState
+import com.beotkkot.tamhumhajang.data.model.RecommendMarket
+import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
+import com.beotkkot.tamhumhajang.data.model.response.Shop
 import com.kakao.vectormap.LatLng
 
 class MapContract {
@@ -13,7 +16,14 @@ class MapContract {
         val userPosition: LatLng = DEFAULT_LATLNG,
         val movingCameraPosition: MovingCameraWrapper = MovingCameraWrapper.DEFAULT,
         val isFixedPerspective: Boolean = false,
-        val showRecommendShopPopup: Boolean = false,
+        val shops: List<Shop> = emptyList(),
+        val badgePosition: BadgePosition? = null,
+
+        val showFirstBadgePopup: Boolean = true,
+
+        val showRecommendMarketPopup: Boolean = false,
+        val recommendMarkets: List<RecommendMarket> = emptyList(),
+
         val showQuestPopup: Boolean = false
     ) : UiState
 

@@ -29,11 +29,7 @@ object NetworkModule {
         OkHttpClient.Builder()
             .addNetworkInterceptor(
                 HttpLoggingInterceptor()
-                    .apply {
-                        if (BuildConfig.DEBUG) {
-                            setLevel(HttpLoggingInterceptor.Level.BODY)
-                        }
-                    }
+                    .setLevel(HttpLoggingInterceptor.Level.BODY)
             )
             .addNetworkInterceptor(ChuckerInterceptor(context))
             .build()

@@ -75,15 +75,25 @@ fun NavHost() {
                 composable(MAP) {
                     val viewModel: MapViewModel = hiltViewModel()
 
-                    MapScreen(appState = appState, bottomSheetState = bottomSheetState, viewModel = viewModel)
+                    MapScreen(
+                        appState = appState,
+                        bottomSheetState = bottomSheetState,
+                        viewModel = viewModel
+                    )
                 }
 
                 composable(BOOKMARK) {
-                    BookmarkScreen(appState = appState, bottomSheetState = bottomSheetState)
+                    BookmarkScreen(
+                        appState = appState,
+                        bottomSheetState = bottomSheetState
+                    )
                 }
 
                 composable(PROFILE) {
-                    ProfileScreen(appState = appState, bottomSheetState = bottomSheetState)
+                    ProfileScreen(
+                        appState = appState,
+                        bottomSheetState = bottomSheetState
+                    )
                 }
             }
         }

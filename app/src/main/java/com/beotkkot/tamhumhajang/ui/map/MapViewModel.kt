@@ -4,8 +4,14 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
+import com.beotkkot.tamhumhajang.data.ApiRepository
+import com.beotkkot.tamhumhajang.data.DataStoreRepository
+import com.beotkkot.tamhumhajang.data.adapter.ApiResult
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -14,10 +20,16 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
+    private val apiRepository: ApiRepository,
+    private val dataStoreRepository: DataStoreRepository,
     @ApplicationContext private val context: Context
 ) : BaseViewModel<MapContract.State, MapContract.Event, MapContract.Effect>(
     initialState = MapContract.State()
@@ -40,6 +52,38 @@ class MapViewModel @Inject constructor(
             .build()
     private val locationCallback: CustomLocationCallback = CustomLocationCallback()
 
+    fun getRecommendMarkets() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(PersistenceModule.USER_ID).first() }
+
+        Log.d("debugging", "호출하긴 하냐 : $userId")
+
+        apiRepository.getRecommendMarkets(userId).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.markets
+
+                    updateState(
+                        currentState.copy(
+                            showRecommendMarketPopup = true,
+                            recommendMarkets = result
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
     fun updateMovingCameraPosition(movingCameraPosition: MovingCameraWrapper) {
         updateState(currentState.copy(movingCameraPosition = movingCameraPosition))
     }
@@ -52,8 +96,12 @@ class MapViewModel @Inject constructor(
         updateState(currentState.copy(isFixedPerspective = isFixed))
     }
 
+    fun updateShowFirstBadgePopup(isShow: Boolean) {
+        updateState(currentState.copy(showFirstBadgePopup = isShow))
+    }
+
     fun updateShowRecommendShopPopup(isShow: Boolean) {
-        updateState(currentState.copy(showRecommendShopPopup = isShow))
+        updateState(currentState.copy(showRecommendMarketPopup = isShow))
     }
 
     fun updateShowQuestPopup(isShow: Boolean) {

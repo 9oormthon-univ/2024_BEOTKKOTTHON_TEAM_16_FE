@@ -38,6 +38,7 @@ import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
+import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
@@ -95,8 +96,10 @@ fun MapScreen(
         }
     }
 
-    if (uiState.showRecommendShopPopup) {
-        RecommendMarketPopup {
+    if (uiState.showRecommendMarketPopup) {
+        RecommendMarketPopup(
+            uiState.recommendMarkets
+        ) {
             viewModel.updateShowRecommendShopPopup(false)
         }
     }
@@ -106,6 +109,20 @@ fun MapScreen(
             viewModel.updateShowQuestPopup(false)
         }
     }
+
+    if (uiState.showFirstBadgePopup) {
+        FirstBadgePopup(
+            onClick = {
+                viewModel.updateShowFirstBadgePopup(false)
+                viewModel.getRecommendMarkets()
+            },
+            onClose = {
+                viewModel.updateShowFirstBadgePopup(false)
+                viewModel.getRecommendMarkets()
+            }
+        )
+    }
+
     
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -172,7 +189,7 @@ fun MapScreen(
             }
 
             ShopButton {
-                viewModel.updateShowRecommendShopPopup(true)
+                viewModel.getRecommendMarkets()
             }
 
             TrackingButton(
