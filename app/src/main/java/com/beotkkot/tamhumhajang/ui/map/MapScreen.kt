@@ -1,6 +1,11 @@
 package com.beotkkot.tamhumhajang.ui.map
 
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +38,6 @@ import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
-import com.beotkkot.tamhumhajang.ui.popup.BadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.kakao.vectormap.LatLng
@@ -101,13 +105,6 @@ fun MapScreen(
         QuestListPopup {
             viewModel.updateShowQuestPopup(false)
         }
-    }
-
-    BadgePopup(
-        onConfirm = { /*TODO*/ },
-        navigateToProfile = { appState.navigate(PROFILE)}
-    ) {
-
     }
     
     Box(
@@ -316,5 +313,42 @@ private fun TrackingButton(
                 tint = if (isTracking) Color.White else Color.Unspecified
             )
         }
+    }
+}
+
+private fun navigateToKakaoMap(
+    startlat: Double,
+    startlng: Double,
+    endlat: Double,
+    endlng: Double,
+    context: Context
+) {
+    val url = "kakaomap://route?sp=${startlat}, ${startlng}&ep=${endlat}, ${endlng}&by=PUBLICTRANSIT"
+
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
+    val installCheck = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.packageManager.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+        )
+    } else {
+        context.packageManager.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+            PackageManager.GET_META_DATA
+        )
+    }
+
+    // 네이버맵이 설치되어 있다면 앱으로 연결, 설치되어 있지 않다면 스토어로 이동
+    if (installCheck.isEmpty()) {
+        context.startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=com.nhn.android.nmap")
+            )
+        )
+    } else {
+        context.startActivity(intent)
     }
 }
