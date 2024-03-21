@@ -17,7 +17,6 @@ data class ProfileResponse(
     val nextImage: String,
     @SerializedName("bookRows")
     val bookRows: List<BookRow>
-
 )
 
 data class BookRow(

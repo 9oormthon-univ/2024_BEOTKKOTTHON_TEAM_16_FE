@@ -29,6 +29,7 @@ import com.beotkkot.tamhumhajang.ui.login.LoginViewModel
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
 import com.beotkkot.tamhumhajang.ui.map.MapViewModel
 import com.beotkkot.tamhumhajang.ui.profile.ProfileScreen
+import com.beotkkot.tamhumhajang.ui.profile.ProfileViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -90,9 +91,12 @@ fun NavHost() {
                 }
 
                 composable(PROFILE) {
+                    val viewModel: ProfileViewModel = hiltViewModel()
+
                     ProfileScreen(
                         appState = appState,
-                        bottomSheetState = bottomSheetState
+                        bottomSheetState = bottomSheetState,
+                        viewModel = viewModel
                     )
                 }
             }

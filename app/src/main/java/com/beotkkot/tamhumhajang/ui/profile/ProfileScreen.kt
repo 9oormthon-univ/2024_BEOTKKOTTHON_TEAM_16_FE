@@ -18,6 +18,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,20 +33,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.BottomSheetState
-import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.data.model.response.Badge
+import com.beotkkot.tamhumhajang.data.model.response.Reward
 import com.beotkkot.tamhumhajang.design.component.TopBar
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 
 @Composable
 fun ProfileScreen(
     appState: AppState,
-    bottomSheetState: BottomSheetState
+    bottomSheetState: BottomSheetState,
+    viewModel: ProfileViewModel
 ) {
-    val name = "용감한 탐험가"
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        viewModel.getProfile()
+
+        effectFlow.collect {
+            when (it) {
+                is ProfileContract.Effect.NavigateTo -> {
+                    appState.navigate(it.destination)
+                }
+                is ProfileContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(it.message)
+                }
+            }
+        }
+    }
 
     val context = LocalContext.current
 
@@ -73,7 +94,7 @@ fun ProfileScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )) {
-                        append(name)
+                        append(uiState.nickname)
                     }
                     append("님,\n모험을 시작해볼까요?")
                 },
@@ -89,24 +110,29 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data("")
-                        .build(),
-                    contentDescription = "IMG_PREVIOUS_GRADE",
-                    modifier = Modifier
-                        .size(72.dp)
-                        .background(
-                            shape = CircleShape,
-                            color = TamhumhajangTheme.colors.color_9ddb80
-                        )
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Crop
-                )
+                if (uiState.previousImage != null) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(uiState.previousImage)
+                            .build(),
+                        contentDescription = "IMG_PREVIOUS_GRADE",
+                        modifier = Modifier
+                            .size(72.dp)
+                            .background(
+                                shape = CircleShape,
+                                color = TamhumhajangTheme.colors.color_9ddb80
+                            )
+                            .padding(10.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.FillBounds
+                    )
+                } else {
+                    Spacer(modifier = Modifier.size(72.dp))
+                }
 
                 AsyncImage(
                     model = ImageRequest.Builder(context)
-                        .data("")
+                        .data(uiState.currentImage)
                         .build(),
                     contentDescription = "IMG_CURRENT_GRADE",
                     modifier = Modifier
@@ -115,30 +141,32 @@ fun ProfileScreen(
                             shape = CircleShape,
                             color = TamhumhajangTheme.colors.color_9ddb80
                         )
+                        .padding(10.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.FillBounds
                 )
 
                 AsyncImage(
                     model = ImageRequest.Builder(context)
-                        .data("")
+                        .data(uiState.nextImage)
                         .build(),
-                    contentDescription = "IMG_CURRENT_GRADE",
+                    contentDescription = "IMG_NEXT_IMAGE",
                     modifier = Modifier
                         .size(72.dp)
                         .background(
                             shape = CircleShape,
                             color = TamhumhajangTheme.colors.color_9ddb80
                         )
+                        .padding(10.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.FillBounds
                 )
             }
 
             Spacer(modifier = Modifier.height(15.dp))
 
             Text(
-                text = "장터 탐험가",
+                text = uiState.characterName,
                 style = TamhumhajangTheme.typography.title3.copy(
                     color = TamhumhajangTheme.colors.color_000000
                 ),
@@ -148,7 +176,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(7.dp))
 
             Text(
-                text = "조금만 더 화이팅 !\n3개만 더 모으면, 장터 보물사냥꾼이 될 수 있어요!",
+                text = uiState.gradeDescription,
                 style = TamhumhajangTheme.typography.description3.copy(
                     color = TamhumhajangTheme.colors.color_000000
                 ),
@@ -176,12 +204,14 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(6.dp))
 
+            val rewardCount = uiState.bookRows.map { it.reward }.count { it.isAcquired }
+
             Text(
                 modifier = Modifier.align(Alignment.End),
                 text = buildAnnotatedString {
                     append("\uD83C\uDFC6 트로피 ")
                     withStyle(SpanStyle(color = TamhumhajangTheme.colors.color_0fa958)) {
-                        append("0")
+                        append("$rewardCount")
                     }
                     append("개")
                 },
@@ -196,9 +226,16 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                StampBoard(modifier = Modifier.fillMaxWidth().weight(1f))
+                StampBoard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    badges = uiState.bookRows.map { it.badges }
+                )
 
-                RewardBoard()
+                RewardBoard(
+                    rewards = uiState.bookRows.map { it.reward }
+                )
             }
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -208,8 +245,11 @@ fun ProfileScreen(
 
 @Composable
 private fun StampBoard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    badges: List<List<Badge>>
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .background(
@@ -223,64 +263,106 @@ private fun StampBoard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        if (badges.size >= 3) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                badges[0].let {
+                    it.forEach { badge ->
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(badge.imgUrl)
+                                .build(),
+                            contentDescription = "IMG_BADGE",
+                            modifier = Modifier.size(50.dp),
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+            }
 
-        }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = Color(0xFF999999))
+            )
 
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(color = Color(0xFF999999)))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                badges[1].let {
+                    it.forEach { badge ->
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(badge.imgUrl)
+                                .build(),
+                            contentDescription = "IMG_BADGE",
+                            modifier = Modifier.size(50.dp),
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+            }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = Color(0xFF999999))
+            )
 
-        }
-
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(color = Color(0xFF999999)))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                badges[2].let {
+                    it.forEach { badge ->
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(badge.imgUrl)
+                                .build(),
+                            contentDescription = "IMG_BADGE",
+                            modifier = Modifier.size(50.dp),
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun RewardBoard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    rewards: List<Reward>,
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        RewardItem()
-        RewardItem()
-        RewardItem()
+        rewards.forEach { reward ->
+            RewardItem(reward)
+        }
     }
 }
 
 @Composable
-private fun RewardItem() {
+private fun RewardItem(
+    reward: Reward
+) {
     val context = LocalContext.current
 
     Box(
@@ -299,7 +381,7 @@ private fun RewardItem() {
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context)
-                .data(R.drawable.ic_reward_disabled)
+                .data(reward.imgUrl)
                 .build(),
             contentDescription = "IMG_REWARD",
             modifier = Modifier.size(50.dp),
