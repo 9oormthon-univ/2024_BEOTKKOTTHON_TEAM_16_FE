@@ -24,8 +24,8 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.data.model.BadgePopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.beotkkot.tamhumhajang.model.BadgePopup
 
 val badgePopupDummy = BadgePopup(
     title = "탐색의 시작 배지 획득\uD83D\uDD25",

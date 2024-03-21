@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.model
+package com.beotkkot.tamhumhajang.data.model
 
 data class Quest(
     val id: Int,

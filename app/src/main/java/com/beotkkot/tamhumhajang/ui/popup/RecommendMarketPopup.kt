@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.data.model.RecommendMarket
 import com.beotkkot.tamhumhajang.design.component.TamhumPopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.beotkkot.tamhumhajang.model.RecommendMarket
 
 val marketsDummy = listOf(
     RecommendMarket(

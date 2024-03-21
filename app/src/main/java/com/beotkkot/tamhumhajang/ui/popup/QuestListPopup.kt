@@ -21,9 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.data.model.Quest
 import com.beotkkot.tamhumhajang.design.component.TamhumPopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.beotkkot.tamhumhajang.model.Quest
 
 val questDummy = listOf(
     Quest(

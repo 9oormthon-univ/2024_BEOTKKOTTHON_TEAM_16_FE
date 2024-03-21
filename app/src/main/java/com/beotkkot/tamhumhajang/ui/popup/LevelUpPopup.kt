@@ -25,8 +25,8 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.data.model.LevelUpIntroducePopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.beotkkot.tamhumhajang.model.LevelUpIntroducePopup
 
 val levelUpDummy = LevelUpIntroducePopup(
     title = "Silver Level UP !",

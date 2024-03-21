@@ -37,6 +37,12 @@ android {
             properties["KAKAO_NATIVE_APP_KEY"] as String
         )
 
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            properties["BASE_URL"] as String
+        )
+
         resValue(
             "string",
             "NAVER_CLIENT_ID",
@@ -127,7 +133,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.50")
+    implementation("com.google.dagger:hilt-android:2.47")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     kapt ("com.google.dagger:hilt-android-compiler:2.47")
@@ -140,9 +146,8 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
-    // NaverMap
-    implementation("io.github.fornewid:naver-map-compose:1.3.3")
-    implementation("io.github.fornewid:naver-map-location:16.0.0")
+    // ChuckerInterceptor
+    implementation ("com.github.chuckerteam.chucker:library:4.0.0")
 
     // KakaoMap
     implementation("com.kakao.maps.open:android:2.9.5")
