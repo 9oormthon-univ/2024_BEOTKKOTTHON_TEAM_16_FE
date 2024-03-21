@@ -19,12 +19,13 @@ import androidx.navigation.compose.composable
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.LOGIN
-import com.beotkkot.tamhumhajang.ui.LoginScreen
 import com.beotkkot.tamhumhajang.ui.MAP
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkScreen
+import com.beotkkot.tamhumhajang.ui.login.LoginScreen
+import com.beotkkot.tamhumhajang.ui.login.LoginViewModel
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
 import com.beotkkot.tamhumhajang.ui.map.MapViewModel
 import com.beotkkot.tamhumhajang.ui.profile.ProfileScreen
@@ -63,7 +64,12 @@ fun NavHost() {
                 }
                 
                 composable(LOGIN) {
-                    LoginScreen(appState = appState)
+                    val viewModel: LoginViewModel = hiltViewModel()
+
+                    LoginScreen(
+                        appState = appState,
+                        viewModel = viewModel
+                    )
                 }
 
                 composable(MAP) {

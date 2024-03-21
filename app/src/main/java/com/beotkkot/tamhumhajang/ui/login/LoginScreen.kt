@@ -1,4 +1,4 @@
-package com.beotkkot.tamhumhajang.ui
+package com.beotkkot.tamhumhajang.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,25 +17,39 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 
 @Composable
 fun LoginScreen(
-    appState: AppState
+    appState: AppState,
+    viewModel: LoginViewModel
 ) {
-    var nickname by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        effectFlow.collect {
+            when (it) {
+                is LoginContract.Effect.NavigateTo -> {
+                    appState.navigate(it.destination)
+                }
+                is LoginContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(it.message)
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -44,7 +58,9 @@ fun LoginScreen(
         contentAlignment = Alignment.Center
     ) {
        Column(
-           modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+           modifier = Modifier
+               .fillMaxWidth()
+               .padding(horizontal = 20.dp),
            horizontalAlignment = Alignment.CenterHorizontally
        ) {
            Image(
@@ -56,9 +72,9 @@ fun LoginScreen(
            Spacer(modifier = Modifier.height(40.dp))
 
            BasicTextField(
-               value = nickname,
+               value = uiState.nickname,
                onValueChange = {
-                   if (nickname.length <= 8) nickname = it
+                   if (uiState.nickname.length <= 8) viewModel.updateNickname(it)
                },
                singleLine = true,
                cursorBrush = SolidColor(Color.White),
@@ -78,7 +94,7 @@ fun LoginScreen(
                                vertical = 12.dp
                            )
                    ) {
-                       if (nickname.isEmpty()) {
+                       if (uiState.nickname.isEmpty()) {
                            Text(
                                text = "닉네임",
                                style = TamhumhajangTheme.typography.title3.copy(
@@ -97,12 +113,12 @@ fun LoginScreen(
                modifier = Modifier.fillMaxWidth(),
                shape = RoundedCornerShape(12.dp),
                colors = ButtonDefaults.buttonColors(
-                   backgroundColor = Color(0xFFAC93F4),
+                   backgroundColor = TamhumhajangTheme.colors.color_9ddb80,
                    contentColor = TamhumhajangTheme.colors.color_ffffff
                ),
                contentPadding = PaddingValues(vertical = 13.dp),
                onClick = {
-                   appState.navigate(MAP)
+                   viewModel.login(uiState.nickname)
                }
            ) {
                Text(
