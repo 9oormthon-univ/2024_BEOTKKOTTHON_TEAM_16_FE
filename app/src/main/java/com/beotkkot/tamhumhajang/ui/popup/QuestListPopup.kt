@@ -12,14 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.data.model.Quest
 import com.beotkkot.tamhumhajang.design.component.TamhumPopup
@@ -89,6 +91,8 @@ fun QuestListPopup(
 private fun QuestItem(
     quest: Quest
 ) {
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -112,10 +116,13 @@ private fun QuestItem(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_shop),
-                contentDescription = "IMG_QUEST",
-                tint = Color.Unspecified
+            AsyncImage(
+                modifier = Modifier.width(35.dp),
+                model = ImageRequest.Builder(context)
+                    .data(quest.imgUrl.ifEmpty { R.drawable.ic_shop })
+                    .build(),
+                contentDescription = "IC_SHOP",
+                contentScale = ContentScale.FillWidth
             )
         }
 

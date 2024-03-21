@@ -45,6 +45,7 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun MapScreen(
@@ -98,14 +99,31 @@ fun MapScreen(
 
     if (uiState.showRecommendMarketPopup) {
         RecommendMarketPopup(
-            uiState.recommendMarkets
-        ) {
-            viewModel.updateShowRecommendShopPopup(false)
-        }
+            markets = uiState.recommendMarkets,
+            onClose = {
+                viewModel.updateShowRecommendShopPopup(false)
+            },
+            onClick = { latitude, longitude ->
+                viewModel.updateShowRecommendShopPopup(false)
+                appState.scope.launch {
+                    cameraPositionState.move(
+                        CameraUpdateFactory.newCenterPosition(LatLng.from(latitude, longitude)),
+                        CameraAnimation.from(100, true, true)
+                    )
+
+                    if (uiState.sequence == 0) {
+                        delay(2000)
+                        viewModel.getQuests()
+                    }
+                }
+            }
+        )
     }
 
     if (uiState.showQuestPopup) {
-        QuestListPopup {
+        QuestListPopup(
+            quests = uiState.quests
+        ) {
             viewModel.updateShowQuestPopup(false)
         }
     }
@@ -185,7 +203,7 @@ fun MapScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             QuestButton {
-                viewModel.updateShowQuestPopup(true)
+                viewModel.getQuests()
             }
 
             ShopButton {

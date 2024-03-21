@@ -67,7 +67,8 @@ val marketsDummy = listOf(
 @Composable
 fun RecommendMarketPopup(
     markets: List<RecommendMarket> = marketsDummy,
-    onClose: () -> Unit = { }
+    onClose: () -> Unit = { },
+    onClick: (Double, Double) -> Unit
 ) {
     var selectedMarketPosition by remember { mutableIntStateOf(1) }
     val currentMarket = markets[selectedMarketPosition]
@@ -135,7 +136,7 @@ fun RecommendMarketPopup(
                     ),
                     contentPadding = PaddingValues(vertical = 13.dp),
                     onClick = {
-                        onClose()
+                        onClick(currentMarket.latitude, currentMarket.longitude)
                     }
                 ) {
                     Text(

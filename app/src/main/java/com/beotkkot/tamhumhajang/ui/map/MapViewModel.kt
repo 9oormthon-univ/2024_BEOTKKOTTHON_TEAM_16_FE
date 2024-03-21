@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
@@ -12,6 +11,8 @@ import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -52,10 +53,13 @@ class MapViewModel @Inject constructor(
             .build()
     private val locationCallback: CustomLocationCallback = CustomLocationCallback()
 
+    init {
+        val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
+        updateState(currentState.copy(sequence = sequence))
+    }
+
     fun getRecommendMarkets() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(PersistenceModule.USER_ID).first() }
-
-        Log.d("debugging", "호출하긴 하냐 : $userId")
 
         apiRepository.getRecommendMarkets(userId).onStart {
             updateState(currentState.copy(isLoading = true))
@@ -69,6 +73,37 @@ class MapViewModel @Inject constructor(
                         currentState.copy(
                             showRecommendMarketPopup = true,
                             recommendMarkets = result
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun getQuests() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+        val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
+
+        apiRepository.getQuests(userId, sequence).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.quest
+
+                    updateState(
+                        currentState.copy(
+                            showQuestPopup = true,
+                            quests = result
                         )
                     )
                 }
