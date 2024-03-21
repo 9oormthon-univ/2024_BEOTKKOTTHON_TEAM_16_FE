@@ -12,6 +12,7 @@ import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
+import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -160,6 +161,18 @@ class MapViewModel @Inject constructor(
 
     fun updateIsFixedPerspective(isFixed: Boolean) {
         updateState(currentState.copy(isFixedPerspective = isFixed))
+    }
+
+    fun updateShowingToast(type: ToastType?) {
+        updateState(currentState.copy(showingToast = type))
+    }
+
+    fun updateToastName(name: String) {
+        updateState(currentState.copy(toastName = name))
+    }
+
+    fun updateToastOnClick(onClick: () -> Unit) {
+        updateState(currentState.copy(toastOnClick = onClick))
     }
 
     fun updateShowFirstBadgePopup(isShow: Boolean) {

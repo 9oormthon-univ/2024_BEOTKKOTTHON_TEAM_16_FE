@@ -106,15 +106,10 @@ fun NavHost() {
 
 @Composable
 private fun SnackBar(appState: AppState) {
-    SnackbarHost(hostState = appState.scaffoldState.snackbarHostState,
+    SnackbarHost(
+        hostState = appState.scaffoldState.snackbarHostState,
         snackbar = { data ->
-            Snackbar(
-                modifier = Modifier.padding(
-                    bottom = 30.dp,
-                    start = 20.dp,
-                    end = 20.dp
-                )
-            ) {
+            Snackbar {
                 Text(text = data.message)
             }
         }

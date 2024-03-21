@@ -8,6 +8,7 @@ import com.beotkkot.tamhumhajang.data.model.Quest
 import com.beotkkot.tamhumhajang.data.model.RecommendMarket
 import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
 import com.beotkkot.tamhumhajang.data.model.response.Shop
+import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.kakao.vectormap.LatLng
 
 class MapContract {
@@ -16,6 +17,10 @@ class MapContract {
         val isLoading: Boolean = false,
         val userPosition: LatLng = DEFAULT_LATLNG,
         val movingCameraPosition: MovingCameraWrapper = MovingCameraWrapper.DEFAULT,
+
+        val showingToast: ToastType? = null,
+        val toastName: String = "",
+        val toastOnClick: () -> Unit = { },
 
         val sequence: Int = 0,
 
@@ -43,6 +48,12 @@ class MapContract {
         ) : Effect()
 
         data class ShowSnackBar(val message: String) : Effect()
+
+        data class ShowToast(
+            val type: ToastType,
+            val name: String,
+            val onClick: () -> Unit
+        ) : Effect()
     }
 
     companion object {

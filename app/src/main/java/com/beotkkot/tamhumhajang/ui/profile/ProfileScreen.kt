@@ -124,7 +124,7 @@ fun ProfileScreen(
                             )
                             .padding(10.dp)
                             .clip(CircleShape),
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.FillWidth
                     )
                 } else {
                     Spacer(modifier = Modifier.size(72.dp))
@@ -143,7 +143,7 @@ fun ProfileScreen(
                         )
                         .padding(10.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.FillWidth
                 )
 
                 AsyncImage(
@@ -159,7 +159,7 @@ fun ProfileScreen(
                         )
                         .padding(10.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.FillWidth
                 )
             }
 

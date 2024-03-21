@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +39,12 @@ import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
 import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
+import com.beotkkot.tamhumhajang.ui.toast.BookmarkToast
+import com.beotkkot.tamhumhajang.ui.toast.CheckProfileToast
+import com.beotkkot.tamhumhajang.ui.toast.NavigateToast
+import com.beotkkot.tamhumhajang.ui.toast.TamhumToast
+import com.beotkkot.tamhumhajang.ui.toast.ToastType
+import com.beotkkot.tamhumhajang.ui.toast.UseRewardToast
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
@@ -72,6 +77,17 @@ fun MapScreen(
                 is MapContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(it.message)
                 }
+                is MapContract.Effect.ShowToast -> {
+                    appState.scope.launch {
+                        viewModel.updateShowingToast(it.type)
+                        viewModel.updateToastName(it.name)
+                        viewModel.updateToastOnClick { it.onClick }
+
+                        delay(5000)
+
+                        viewModel.updateShowingToast(null)
+                    }
+                }
             }
         }
     }
@@ -96,7 +112,6 @@ fun MapScreen(
     LaunchedEffect(uiState.isFixedPerspective) {
         while (true) {
             delay(100)
-            Log.d("debugging", "이동 : ${uiState.isFixedPerspective}")
 
             if (uiState.isFixedPerspective) {
                 cameraPositionState.move(
@@ -152,11 +167,9 @@ fun MapScreen(
             }
         )
     }
-
     
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomEnd
+        modifier = Modifier.fillMaxSize()
     ) {
         KakaoMap(
             modifier = Modifier.fillMaxSize(),
@@ -231,7 +244,9 @@ fun MapScreen(
         }
 
         Column(
-            modifier = Modifier.padding(end = 14.dp, bottom = 28.dp),
+            modifier = Modifier
+                .padding(end = 14.dp, bottom = 28.dp)
+                .align(Alignment.BottomEnd),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             QuestButton {
@@ -246,6 +261,47 @@ fun MapScreen(
                 isTracking = uiState.isFixedPerspective
             ) {
                 viewModel.updateIsFixedPerspective(!uiState.isFixedPerspective)
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 10.dp
+                )
+                .align(Alignment.BottomCenter)
+        ) {
+            uiState.showingToast?.let {
+                when (it) {
+                    ToastType.PROFILE -> {
+                        CheckProfileToast {
+                            appState.navigate(PROFILE)
+                        }
+                    }
+                    ToastType.NAVIGATE -> {
+                        NavigateToast(name = uiState.toastName) {
+                            uiState.toastOnClick()
+                        }
+                    }
+                    ToastType.REWARD -> {
+                        UseRewardToast {
+                            uiState.toastOnClick()
+                        }
+                    }
+                    ToastType.BOOKMARK -> {
+                        BookmarkToast(name = uiState.toastName) {
+                            uiState.toastOnClick()
+                        }
+                    }
+                }
+            }
+            TamhumToast(
+                leadingIcon = R.drawable.ic_toast_map,
+                description = "광장시장 '카카오맵'으로 길찾기"
+            ) {
+
             }
         }
     }
