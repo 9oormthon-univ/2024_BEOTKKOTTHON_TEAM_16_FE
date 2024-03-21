@@ -1,6 +1,5 @@
 package com.beotkkot.tamhumhajang.ui.popup
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -82,13 +81,10 @@ fun RecommendMarketPopup(
             modifier = Modifier
                 .width(300.dp)
                 .padding(
-                    top = 40.dp,
+                    top = 30.dp,
                     bottom = 25.dp,
                     start = 20.dp,
                     end = 20.dp
-                )
-                .background(
-                    color = TamhumhajangTheme.colors.color_ffffff
                 ),
             contentAlignment = Alignment.Center
         ) {

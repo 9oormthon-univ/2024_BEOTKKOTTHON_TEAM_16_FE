@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,7 +43,6 @@ import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.beotkkot.tamhumhajang.ui.toast.BookmarkToast
 import com.beotkkot.tamhumhajang.ui.toast.CheckProfileToast
 import com.beotkkot.tamhumhajang.ui.toast.NavigateToast
-import com.beotkkot.tamhumhajang.ui.toast.TamhumToast
 import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.beotkkot.tamhumhajang.ui.toast.UseRewardToast
 import com.kakao.vectormap.LatLng
@@ -61,6 +61,8 @@ fun MapScreen(
     val effectFlow = viewModel.effect
 
     val cameraPositionState = rememberCameraPositionState()
+
+    val context = LocalContext.current
 
     ManageLocationPermission(
         addLocationListener = viewModel::addLocationListener,
@@ -81,7 +83,7 @@ fun MapScreen(
                     appState.scope.launch {
                         viewModel.updateShowingToast(it.type)
                         viewModel.updateToastName(it.name)
-                        viewModel.updateToastOnClick { it.onClick }
+                        viewModel.updateToastOnClick(it.onClick)
 
                         delay(5000)
 
@@ -152,6 +154,21 @@ fun MapScreen(
             quests = uiState.quests
         ) {
             viewModel.updateShowQuestPopup(false)
+
+            val market = uiState.recommendMarkets[1]
+            val userPosition = uiState.userPosition
+
+            if (uiState.sequence == 0) viewModel.showNavigatePopup(
+                "마천시장"
+            ) {
+                navigateToKakaoMap(
+                    userPosition.latitude,
+                    userPosition.longitude,
+                    market.latitude,
+                    market.longitude,
+                    context
+                )
+            }
         }
     }
 
@@ -296,12 +313,6 @@ fun MapScreen(
                         }
                     }
                 }
-            }
-            TamhumToast(
-                leadingIcon = R.drawable.ic_toast_map,
-                description = "광장시장 '카카오맵'으로 길찾기"
-            ) {
-
             }
         }
     }

@@ -12,6 +12,7 @@ import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
+import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
 import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -71,10 +72,11 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data.shops
 
+                    // 임시로 배지 포지션을 두번째 샵으로 설정 TODO : 서버 수정 후 지워야함
                     updateState(
                         currentState.copy(
                             shops = result,
-                            badgePosition = it.data.badgePosition
+                            badgePosition = BadgePosition(result[1].latitude, result[1].longitude)
                         )
                     )
                 }
@@ -149,6 +151,10 @@ class MapViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun showNavigatePopup(name: String, onClick: () -> Unit) {
+        postEffect(MapContract.Effect.ShowToast(ToastType.NAVIGATE, name, onClick))
     }
 
     fun updateMovingCameraPosition(movingCameraPosition: MovingCameraWrapper) {

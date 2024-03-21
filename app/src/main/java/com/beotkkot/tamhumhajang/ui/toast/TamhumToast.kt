@@ -1,7 +1,6 @@
 package com.beotkkot.tamhumhajang.ui.toast
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,20 +29,14 @@ fun TamhumToast(
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.
-            background(
-                shape = RoundedCornerShape(12.dp),
-                color = Color(0xFF505866)
-            )
-            .padding(
-                horizontal = 16.dp,
-                vertical = 10.dp
-            ),
+        shape = RoundedCornerShape(12.dp),
         color = Color(0xFF505866),
         elevation = 10.dp,
         onClick = onClick
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(id = leadingIcon),
                 contentDescription = "IC_TOAST_LEADING_ICON",
