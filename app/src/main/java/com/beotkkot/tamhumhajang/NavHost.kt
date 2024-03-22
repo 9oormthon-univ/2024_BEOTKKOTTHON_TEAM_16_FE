@@ -1,5 +1,6 @@
 package com.beotkkot.tamhumhajang
 
+import OnBoardingScreen
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -14,12 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.LOGIN
 import com.beotkkot.tamhumhajang.ui.MAP
+import com.beotkkot.tamhumhajang.ui.ONBOARDING
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
@@ -72,6 +76,22 @@ fun NavHost() {
                         viewModel = viewModel
                     )
                 }
+
+                composable(
+                    route = "$ONBOARDING?nickname={nickname}",
+                    arguments = listOf(
+                        navArgument("nickname") {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ) {
+                    OnBoardingScreen(
+                        appState = appState,
+                        nickname = it.arguments?.getString("nickname") ?: ""
+                    )
+                }
+
 
                 composable(MAP) {
                     val viewModel: MapViewModel = hiltViewModel()

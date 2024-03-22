@@ -129,6 +129,9 @@ dependencies {
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
+    implementation("androidx.compose.foundation:foundation:1.6.3")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 

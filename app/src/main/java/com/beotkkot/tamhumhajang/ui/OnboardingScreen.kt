@@ -1,7 +1,19 @@
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -17,17 +29,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-import com.google.accompanist.pager.*
+import com.beotkkot.tamhumhajang.ui.MAP
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 
-@Preview
 @Composable
-fun ImagePagerScreen() {
+fun OnBoardingScreen(
+    appState: AppState,
+    nickname: String
+) {
     val pagerState = rememberPagerState()
 
     Column(
@@ -41,7 +56,7 @@ fun ImagePagerScreen() {
                 .fillMaxWidth(),
         ) { page ->
             when (page) {
-                0 -> PageOneContent()
+                0 -> PageOneContent(nickname)
                 1 -> PageTwoContent()
                 2 -> PageThreeContent()
                 else -> Text("Unknown page")
@@ -80,7 +95,7 @@ fun ImagePagerScreen() {
                 .fillMaxWidth()
                 .padding(16.dp)
                 .height(48.dp),
-            onClick = {},
+            onClick = { appState.navigate(MAP) },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = TamhumhajangTheme.colors.color_9ddb80,
                 contentColor = Color.White
@@ -95,7 +110,9 @@ fun ImagePagerScreen() {
 }
 
 @Composable
-fun PageOneContent() {
+fun PageOneContent(
+    nickname: String
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,9 +123,16 @@ fun PageOneContent() {
         Row {
             Spacer(modifier = Modifier.width(24.dp))
             Text(
-                text = "{닉네임}님, 환영해요!\n" +
-                        "탐험할 준비가 끝났어요",
-                style = TamhumhajangTheme.typography.largeTitle,
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(TamhumhajangTheme.colors.color_0fa958)) {
+                        append(nickname)
+                    }
+                    append("님, 환영해요!\n" +
+                            "탐험할 준비가 끝났어요")
+                },
+                style = TamhumhajangTheme.typography.largeTitle.copy(
+                    color = TamhumhajangTheme.colors.color_000000
+                ),
             )
         }
 

@@ -5,9 +5,12 @@ import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.GRADE
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule.IS_NOT_FIRST_LAUNCH
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import com.beotkkot.tamhumhajang.ui.MAP
+import com.beotkkot.tamhumhajang.ui.ONBOARDING
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -24,6 +27,8 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(nickname: String) = runBlocking {
+        val isNotFirstLaunch = runBlocking { dataStoreRepository.getBooleanValue(IS_NOT_FIRST_LAUNCH).first() }
+
         apiRepository.login(nickname).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collect {
@@ -34,7 +39,12 @@ class LoginViewModel @Inject constructor(
                         dataStoreRepository.setIntValue(USER_ID, result.id)
                         dataStoreRepository.setIntValue(GRADE, result.grade)
                     }
-                    postEffect(LoginContract.Effect.NavigateTo(MAP))
+                    if (isNotFirstLaunch) {
+                        postEffect(LoginContract.Effect.NavigateTo(MAP))
+                    } else {
+                        runBlocking { dataStoreRepository.setBooleanValue(IS_NOT_FIRST_LAUNCH, true) }
+                        postEffect(LoginContract.Effect.NavigateTo("$ONBOARDING?nickname=$nickname"))
+                    }
                 }
                 is ApiResult.ApiError -> {
                     postEffect(LoginContract.Effect.ShowSnackBar(it.message))
@@ -44,9 +54,6 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
-
-        dataStoreRepository.setIntValue(USER_ID, 1)
-
     }
 
     fun updateNickname(nickname: String) {
