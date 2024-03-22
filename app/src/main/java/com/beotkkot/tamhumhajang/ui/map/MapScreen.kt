@@ -111,6 +111,14 @@ fun MapScreen(
         }
     }
 
+    LaunchedEffect(uiState.badgePosition) {
+        while (true) {
+            delay(5000)
+
+            viewModel.checkIsNearMarker()
+        }
+    }
+
     LaunchedEffect(uiState.isFixedPerspective) {
         while (true) {
             delay(100)
@@ -236,9 +244,9 @@ fun MapScreen(
                 )
             }
 
-            if (uiState.badgePosition.latitude != null && uiState.badgePosition.longitude != null) {
+            uiState.badgePosition?.let {
                 Label(
-                    position = LatLng.from(uiState.badgePosition.latitude!!, uiState.badgePosition.longitude!!),
+                    position = LatLng.from(it.latitude, it.longitude),
                     iconResId = R.drawable.img_badge_location,
                     tag = "뱃지"
                 )

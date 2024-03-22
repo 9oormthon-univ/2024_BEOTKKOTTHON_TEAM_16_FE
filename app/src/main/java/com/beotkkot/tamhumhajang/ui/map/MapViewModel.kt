@@ -61,6 +61,31 @@ class MapViewModel @Inject constructor(
         getShopsLocation()
     }
 
+    fun checkIsNearMarker() {
+        val badgePosition = currentState.badgePosition
+
+        badgePosition?.let {
+            val userPosition = currentState.userPosition
+
+            if (
+                userPosition.latitude >= badgePosition.latitude - 0.00005 &&
+                userPosition.latitude <= badgePosition.latitude + 0.00005 &&
+                userPosition.longitude >= badgePosition.longitude - 0.00005 &&
+                userPosition.longitude <= badgePosition.longitude + 0.00005
+            ) {
+                touch()
+            } else {
+                return
+            }
+        }
+
+        return
+    }
+
+    fun touch() {
+        postEffect(MapContract.Effect.ShowSnackBar("뱃지 획득"))
+    }
+
     fun getShopsLocation() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
 
@@ -72,11 +97,14 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data.shops
 
-                    // 임시로 배지 포지션을 두번째 샵으로 설정 TODO : 서버 수정 후 지워야함
+                    // 임시로 배지 포지션을 두번째 샵으로 설정
                     updateState(
                         currentState.copy(
                             shops = result,
-                            badgePosition = BadgePosition(result[1].latitude, result[1].longitude)
+                            badgePosition = BadgePosition(
+                                37.7455536,
+                                127.058932
+                            )
                         )
                     )
                 }
@@ -124,9 +152,8 @@ class MapViewModel @Inject constructor(
 
     fun showQuests() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
-        val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
 
-        apiRepository.getQuests(userId, sequence).onStart {
+        apiRepository.getQuests(userId).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collect {
             updateState(currentState.copy(isLoading = false))

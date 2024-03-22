@@ -6,7 +6,7 @@ data class ShopListResponse(
     @SerializedName("shops")
     val shops: List<Shop>,
     @SerializedName("badgePosition")
-    val badgePosition: BadgePosition
+    val badgePosition: BadgePosition?
 )
 
 data class Shop(
@@ -30,7 +30,7 @@ data class Shop(
 
 data class BadgePosition(
     @SerializedName("latitude")
-    val latitude: Double?,
+    val latitude: Double,
     @SerializedName("longitude")
-    val longitude: Double?
+    val longitude: Double
 )

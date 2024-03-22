@@ -19,9 +19,8 @@ class ApiRepository @Inject constructor(
     ) = apiDataSource.getShops(userId)
 
     fun getQuests(
-        userId: Int,
-        sequence: Int
-    ) = apiDataSource.getQuests(userId, sequence)
+        userId: Int
+    ) = apiDataSource.getQuests(userId)
 
     fun getBadge(
         userId: Int,

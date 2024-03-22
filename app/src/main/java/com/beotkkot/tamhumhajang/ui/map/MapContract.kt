@@ -27,7 +27,7 @@ class MapContract {
         val isFixedPerspective: Boolean = false,
 
         val shops: List<Shop> = emptyList(),
-        val badgePosition: BadgePosition = BadgePosition(null, null),
+        val badgePosition: BadgePosition? = null,
 
         val showFirstBadgePopup: Boolean = true,
 

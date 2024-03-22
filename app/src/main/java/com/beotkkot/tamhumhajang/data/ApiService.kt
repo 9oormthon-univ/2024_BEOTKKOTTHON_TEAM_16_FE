@@ -24,15 +24,14 @@ interface ApiService {
         @Path("userId") userId: Int
     ): ApiResult<RecommendMarketResponse>
 
-    @GET("users/{userId}/shops")
+    @GET("users/{userId}/shopScreen")
     suspend fun getShops(
         @Path("userId") userId: Int
     ): ApiResult<ShopListResponse>
 
-    @GET("users/{userId}/questScreen/{sequence}")
+    @GET("users/{userId}/questList")
     suspend fun getQuests(
-        @Path("userId") userId: Int,
-        @Path("sequence") sequence: Int
+        @Path("userId") userId: Int
     ): ApiResult<QuestListResponse>
 
     @GET("users/{userId}/badge/{sequence}")

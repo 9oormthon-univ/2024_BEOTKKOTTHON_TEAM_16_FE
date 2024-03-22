@@ -30,10 +30,9 @@ class ApiDataSource @Inject constructor(
     }.flowOn(ioDispatcher)
 
     fun getQuests(
-        userId: Int,
-        sequence: Int
+        userId: Int
     ) = flow {
-        emit(apiService.getQuests(userId, sequence))
+        emit(apiService.getQuests(userId))
     }.flowOn(ioDispatcher)
 
     fun getBadge(
