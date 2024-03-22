@@ -23,7 +23,9 @@ object PersistenceModule {
     // PreferenceKeys
     val IS_FIRST_LAUNCH = booleanPreferencesKey("is_first_launch")
     val USER_ID = intPreferencesKey("user_id")
+    val GRADE = intPreferencesKey("grade")
     val SEQUENCE = intPreferencesKey("sequence")
+
 
     @Singleton
     @Provides

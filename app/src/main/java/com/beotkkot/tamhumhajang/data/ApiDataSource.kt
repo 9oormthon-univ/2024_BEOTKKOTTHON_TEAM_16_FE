@@ -11,6 +11,12 @@ class ApiDataSource @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
+    fun login(
+        nickname: String
+    ) = flow {
+        emit(apiService.login(nickname))
+    }.flowOn(ioDispatcher)
+
     fun getRecommendMarkets(
         userId: Int
     ) = flow {

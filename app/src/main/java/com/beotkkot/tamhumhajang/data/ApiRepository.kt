@@ -6,6 +6,10 @@ class ApiRepository @Inject constructor(
     private val apiDataSource: ApiDataSource
 ) {
 
+    fun login(
+        nickname: String
+    ) = apiDataSource.login(nickname)
+
     fun getRecommendMarkets(
         userId: Int
     ) = apiDataSource.getRecommendMarkets(userId)
