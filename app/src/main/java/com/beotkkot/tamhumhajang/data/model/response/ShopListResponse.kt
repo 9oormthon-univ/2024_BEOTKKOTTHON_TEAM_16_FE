@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class ShopListResponse(
     @SerializedName("shops")
     val shops: List<Shop>,
-    @SerializedName("badgePosition")
+    @SerializedName("position")
     val badgePosition: BadgePosition?
 )
 

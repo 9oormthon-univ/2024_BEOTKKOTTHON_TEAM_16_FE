@@ -15,6 +15,6 @@ data class LevelUpResponse(
     val tierImgUrl: String,
     @SerializedName("description")
     val description: String,
-    @SerializedName("badgePosition")
+    @SerializedName("position")
     val badgePosition: BadgePosition
 )

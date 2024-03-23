@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.beotkkot.kakaomap_compose.KakaoMap
 import com.beotkkot.kakaomap_compose.overlay.Label
+import com.beotkkot.kakaomap_compose.settings.DefaultMapViewSettings
+import com.beotkkot.kakaomap_compose.settings.MapDirection
+import com.beotkkot.kakaomap_compose.settings.MapWidgetPosition
 import com.beotkkot.kakaomap_compose.state.rememberCameraPositionState
 import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.BottomSheetState
@@ -110,7 +113,6 @@ fun MapScreen(
 
             is MovingCameraWrapper.MOVING -> {
                 Log.d("debugging", "위치 이동 : ${movingCameraPosition.location.latitude} ${movingCameraPosition.location.longitude}")
-
 
                 cameraPositionState.move(
                     CameraUpdateFactory.newCenterPosition(LatLng.from(movingCameraPosition.location.latitude, movingCameraPosition.location.longitude)),
@@ -203,7 +205,7 @@ fun MapScreen(
                 val userPosition = uiState.userPosition
 
                 viewModel.showNavigatePopup(
-                    "마천시장"
+                    "네오네 정육가게"
                 ) {
                     navigateToKakaoMap(
                         userPosition.latitude,
@@ -297,10 +299,6 @@ fun MapScreen(
         }
     }
 
-    // TODO 퀴즈 팝업 연결
-    // 퀴즈 경고 팝업을 띄우고 지우면 isShowQuizWarningPopup = false, isShowQuizQuestionPopup = true
-    // isShowQuizQuestion 에서 버튼을 고르면 viewModel.verifyAnswer(선택한 답) 호출
-    //
     if (uiState.showQuizWarningPopup) {
         uiState.quizWarningPopup?.let {
             WarningPopup(
@@ -351,6 +349,13 @@ fun MapScreen(
         KakaoMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
+            mapViewSettings = DefaultMapViewSettings.copy(
+                compassPosition = MapWidgetPosition(
+                    MapDirection.BottomLeft,
+                    50f,
+                    50f
+                )
+            ),
             onMapReady = {
                 if (MapViewModel.initialMarkerLoadFlag && uiState.userPosition != MapContract.DEFAULT_LATLNG) {
                     MapViewModel.initialMarkerLoadFlag = false

@@ -56,4 +56,4 @@ public data class MapViewSettings(
     }
 }
 
-internal val DefaultMapViewSettings = MapViewSettings()
+val DefaultMapViewSettings = MapViewSettings()
