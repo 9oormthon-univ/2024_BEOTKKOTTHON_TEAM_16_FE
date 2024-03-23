@@ -312,7 +312,11 @@ fun MapScreen(
         ) {
             Label(
                 position = uiState.userPosition,
-                iconResId = R.drawable.img_explorer_level_1,
+                iconResId = if (uiState.userGrade == 1) {
+                    R.drawable.img_explorer_level_1
+                } else {
+                    R.drawable.img_explorer_level_2
+                },
                 tag = "나"
             ) {
 

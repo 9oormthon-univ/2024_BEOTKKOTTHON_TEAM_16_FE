@@ -17,6 +17,9 @@ class MapContract {
 
     data class State(
         val isLoading: Boolean = false,
+
+        val userGrade: Int = 1,
+
         val userPosition: LatLng = DEFAULT_LATLNG,
         val movingCameraPosition: MovingCameraWrapper = MovingCameraWrapper.DEFAULT,
 

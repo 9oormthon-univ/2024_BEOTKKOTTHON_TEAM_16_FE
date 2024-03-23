@@ -42,6 +42,7 @@ class LoginViewModel @Inject constructor(
                         dataStoreRepository.setIntValue(USER_ID, result.id)
                         dataStoreRepository.setIntValue(GRADE, result.grade)
                         dataStoreRepository.setIntValue(SEQUENCE, result.getUserItemCount)
+                        dataStoreRepository.setIntValue(GRADE, result.grade)
                     }
                     if (isNotFirstLaunch) {
                         postEffect(LoginContract.Effect.NavigateTo(MAP))

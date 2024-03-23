@@ -7,14 +7,14 @@ data class LevelUpResponse(
     val title: String,
     @SerializedName("grade")
     val grade: String,
+    @SerializedName("level")
+    val level: Int,
     @SerializedName("characterImgUrl")
     val characterImgUrl: String,
     @SerializedName("tierImgUrl")
     val tierImgUrl: String,
     @SerializedName("description")
     val description: String,
-    @SerializedName("latitude")
-    val latitude: Double?,
-    @SerializedName("longitude")
-    val longitude: Double?
+    @SerializedName("badgePosition")
+    val badgePosition: BadgePosition
 )

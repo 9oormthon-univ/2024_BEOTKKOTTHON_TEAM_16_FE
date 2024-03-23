@@ -36,7 +36,7 @@ fun TrophyPopup(
     val context = LocalContext.current
 
     TamhumPopup(
-        onDismissRequest = onClose
+        onDismissRequest = { onClose() }
     ) {
         Box(
             modifier = Modifier

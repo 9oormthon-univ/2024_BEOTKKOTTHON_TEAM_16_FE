@@ -11,6 +11,7 @@ import com.beotkkot.tamhumhajang.common.BaseViewModel
 import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule.GRADE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import com.beotkkot.tamhumhajang.data.model.PopupType
@@ -58,7 +59,8 @@ class MapViewModel @Inject constructor(
 
     init {
         val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
-        updateState(currentState.copy(sequence = sequence))
+        val grade = runBlocking { dataStoreRepository.getIntValue(GRADE).first() }
+        updateState(currentState.copy(sequence = sequence, userGrade = grade))
 
         // 첫 시작 시 배지 획득 팝업
         if (sequence == 1) updateShowFirstBadgePopup(true)
@@ -85,9 +87,14 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun setSequence(itemCount: Int) = viewModelScope.launch {
+    fun setSequence(itemCount: Int) {
         updateState(currentState.copy(sequence = itemCount))
         runBlocking { dataStoreRepository.setIntValue(SEQUENCE, itemCount) }
+    }
+
+    fun setLevel(level: Int) {
+        updateState(currentState.copy(userGrade = level))
+        runBlocking { dataStoreRepository.setIntValue(GRADE, level) }
     }
 
     fun touch() = viewModelScope.launch {
@@ -148,7 +155,8 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data
 
-                    updateState(currentState.copy(showLevelUpPopup = true, levelUpPopup = result))
+                    runBlocking { dataStoreRepository.setIntValue(GRADE, result.level) }
+                    updateState(currentState.copy(showLevelUpPopup = true, levelUpPopup = result, userGrade = result.level))
                 }
 
                 is ApiResult.ApiError -> {
@@ -320,6 +328,10 @@ class MapViewModel @Inject constructor(
 
     fun updateBadgePosition(badgePosition: BadgePosition?) {
         updateState(currentState.copy(badgePosition = badgePosition))
+    }
+
+    fun updateMerchantAssociationPosition(badgePosition: BadgePosition?) {
+        updateState(currentState.copy(merchantAssociationPosition = badgePosition))
     }
 
     fun updateShowRecommendShopPopup(isShow: Boolean) {
