@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
@@ -149,8 +150,12 @@ class MapViewModel @Inject constructor(
                         }
 
                         PopupType.Quiz -> {
+                            Log.d("debugging", "퀴즈 팝업 : $result")
+
                             updateState(
                                 currentState.copy(
+                                    showBadgePopup = false,
+                                    badgePopup = result.badgePopup,
                                     showQuizWarningPopup = true,
                                     quizWarningPopup = result.quizPopup?.warning,
                                     quizQuestionPopup = result.quizPopup?.question
@@ -239,8 +244,12 @@ class MapViewModel @Inject constructor(
                     val result = it.data
 
                     if (result.isCorrect) {
-                        updateState(currentState.copy(badgePosition = null))
-                        touch()
+                        updateState(
+                            currentState.copy(
+                                showBadgePopup = true,
+                                badgePosition = null
+                            )
+                        )
                     }
                 }
 
@@ -387,6 +396,14 @@ class MapViewModel @Inject constructor(
 
     fun updateMerchantAssociationPosition(badgePosition: BadgePosition?) {
         updateState(currentState.copy(merchantAssociationPosition = badgePosition))
+    }
+
+    fun updateShowQuizWarningPopup(isShow: Boolean) {
+        updateState(currentState.copy(showQuizWarningPopup = isShow))
+    }
+
+    fun updateShowQuizQuestionPopup(isShow: Boolean) {
+        updateState(currentState.copy(showQuizQuestionPopup = isShow))
     }
 
     fun updateShowRecommendShopPopup(isShow: Boolean) {

@@ -38,12 +38,15 @@ data class BadgePopup(
 )
 
 data class QuizPopup(
+    @SerializedName("quizWarningPopup")
     val warning: QuizWarningPopup,
+    @SerializedName("quizQuestionPopup")
     val question: QuizQuestionPopup
 )
 
 data class QuizWarningPopup(
     val title: String,  // 제목 녹두 하나 주면 안 잡아먹지!
+    val image: String,
     val name: String, // 몬스터 이름 ex) 호랑이 (어흥),
     val confirm: String // 떡 구하러 가기, 과일 구하러 가기
 )

@@ -44,8 +44,10 @@ import com.beotkkot.tamhumhajang.ui.popup.ConnectionPopup
 import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.LevelUpPopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
+import com.beotkkot.tamhumhajang.ui.popup.QuestionPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.beotkkot.tamhumhajang.ui.popup.TrophyPopup
+import com.beotkkot.tamhumhajang.ui.popup.WarningPopup
 import com.beotkkot.tamhumhajang.ui.toast.BookmarkToast
 import com.beotkkot.tamhumhajang.ui.toast.CheckProfileToast
 import com.beotkkot.tamhumhajang.ui.toast.NavigateToast
@@ -122,7 +124,7 @@ fun MapScreen(
 
     LaunchedEffect(uiState.badgePosition) {
         while (true) {
-            delay(5000)
+            delay(2500)
 
             viewModel.checkIsNearMarker()
         }
@@ -299,6 +301,26 @@ fun MapScreen(
     // 퀴즈 경고 팝업을 띄우고 지우면 isShowQuizWarningPopup = false, isShowQuizQuestionPopup = true
     // isShowQuizQuestion 에서 버튼을 고르면 viewModel.verifyAnswer(선택한 답) 호출
     //
+    if (uiState.showQuizWarningPopup) {
+        uiState.quizWarningPopup?.let {
+            WarningPopup(
+                popup = it
+            ) {
+                viewModel.updateShowQuizWarningPopup(false)
+                viewModel.updateShowQuizQuestionPopup(true)
+            }
+        }
+    }
+
+
+    if (uiState.showQuizQuestionPopup) {
+        uiState.quizQuestionPopup?.let {
+            QuestionPopup(
+                popup = it,
+                onChoose = viewModel::verifyAnswer
+            )
+        }
+    }
 
 
     if (uiState.showConnectionPopup) {
