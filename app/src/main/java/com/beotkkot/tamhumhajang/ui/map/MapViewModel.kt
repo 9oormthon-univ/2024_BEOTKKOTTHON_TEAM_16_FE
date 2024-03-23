@@ -70,10 +70,10 @@ class MapViewModel @Inject constructor(
             val userPosition = currentState.userPosition
 
             if (
-                userPosition.latitude >= badgePosition.latitude - 0.00005 &&
-                userPosition.latitude <= badgePosition.latitude + 0.00005 &&
-                userPosition.longitude >= badgePosition.longitude - 0.00005 &&
-                userPosition.longitude <= badgePosition.longitude + 0.00005
+                userPosition.latitude >= badgePosition.latitude - 0.0001 &&
+                userPosition.latitude <= badgePosition.latitude + 0.0001 &&
+                userPosition.longitude >= badgePosition.longitude - 0.0001 &&
+                userPosition.longitude <= badgePosition.longitude + 0.0001
             ) {
                 updateState(currentState.copy(badgePosition = null))
 
@@ -155,10 +155,8 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data
 
-                    if (result.isBookmarked) {
-                        if (currentState.sequence == 2) {
-                            touch()
-                        }
+                    if (result.isBookmarked && currentState.sequence == 2) {
+                        touch()
                     }
                 }
 

@@ -1,5 +1,6 @@
 package com.beotkkot.tamhumhajang.ui.login
 
+import androidx.navigation.navOptions
 import com.beotkkot.tamhumhajang.common.BaseViewModel
 import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
@@ -7,6 +8,7 @@ import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.GRADE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.IS_NOT_FIRST_LAUNCH
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
+import com.beotkkot.tamhumhajang.ui.LOGIN
 import com.beotkkot.tamhumhajang.ui.MAP
 import com.beotkkot.tamhumhajang.ui.ONBOARDING
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +45,12 @@ class LoginViewModel @Inject constructor(
                         postEffect(LoginContract.Effect.NavigateTo(MAP))
                     } else {
                         runBlocking { dataStoreRepository.setBooleanValue(IS_NOT_FIRST_LAUNCH, true) }
-                        postEffect(LoginContract.Effect.NavigateTo("$ONBOARDING?nickname=$nickname"))
+                        postEffect(
+                            LoginContract.Effect.NavigateTo(
+                                destination = "$ONBOARDING?nickname=$nickname",
+                                navOptions = navOptions { popUpTo(LOGIN) { inclusive = true } }
+                            )
+                        )
                     }
                 }
                 is ApiResult.ApiError -> {

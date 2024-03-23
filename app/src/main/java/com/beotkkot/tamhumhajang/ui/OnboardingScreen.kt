@@ -35,6 +35,7 @@ import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.MAP
+import com.beotkkot.tamhumhajang.ui.ONBOARDING
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 
@@ -57,8 +58,8 @@ fun OnBoardingScreen(
         ) { page ->
             when (page) {
                 0 -> PageOneContent(nickname)
-                1 -> PageTwoContent()
-                2 -> PageThreeContent()
+                1 -> PageTwoContent(nickname)
+                2 -> PageThreeContent(nickname)
                 else -> Text("Unknown page")
             }
         }
@@ -95,7 +96,13 @@ fun OnBoardingScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .height(48.dp),
-            onClick = { appState.navigate(MAP) },
+            onClick = {
+                appState.navigate(MAP) {
+                    popUpTo(ONBOARDING) {
+                        inclusive = true
+                    }
+                }
+              },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = TamhumhajangTheme.colors.color_9ddb80,
                 contentColor = Color.White
@@ -240,7 +247,9 @@ fun PageOneContent(
 }
 
 @Composable
-fun PageTwoContent() {
+fun PageTwoContent(
+    nickname: String
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -251,9 +260,16 @@ fun PageTwoContent() {
         Row {
             Spacer(modifier = Modifier.width(24.dp))
             Text(
-                text = "{닉네임}님, 환영해요!\n" +
-                        "탐험할 준비가 끝났어요",
-                style = TamhumhajangTheme.typography.largeTitle,
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(TamhumhajangTheme.colors.color_0fa958)) {
+                        append(nickname)
+                    }
+                    append("님, 환영해요!\n" +
+                            "탐험할 준비가 끝났어요")
+                },
+                style = TamhumhajangTheme.typography.largeTitle.copy(
+                    color = TamhumhajangTheme.colors.color_000000
+                ),
             )
         }
 
@@ -361,7 +377,9 @@ fun PageTwoContent() {
 }
 
 @Composable
-fun PageThreeContent() {
+fun PageThreeContent(
+    nickname: String
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -372,9 +390,16 @@ fun PageThreeContent() {
         Row {
             Spacer(modifier = Modifier.width(24.dp))
             Text(
-                text = "{닉네임}님, 환영해요!\n" +
-                        "탐험할 준비가 끝났어요",
-                style = TamhumhajangTheme.typography.largeTitle,
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(TamhumhajangTheme.colors.color_0fa958)) {
+                        append(nickname)
+                    }
+                    append("님, 환영해요!\n" +
+                            "탐험할 준비가 끝났어요")
+                },
+                style = TamhumhajangTheme.typography.largeTitle.copy(
+                    color = TamhumhajangTheme.colors.color_000000
+                ),
             )
         }
 
