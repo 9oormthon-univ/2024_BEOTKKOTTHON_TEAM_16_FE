@@ -233,6 +233,10 @@ fun MapScreen(
                 popup = popUp,
                 onConfirm = {
                     if (uiState.sequence == 2) viewModel.updateShowConnectionPopup(true)
+
+                    // 3의 배수 배지 획득시마다 레벨업 호출
+                    if (uiState.sequence % 3 == 0) viewModel.levelUp()
+
                     viewModel.updateShowBadgePopup(false)
                 },
                 navigateToProfile = {
@@ -240,6 +244,10 @@ fun MapScreen(
                 },
                 onClose = {
                     if (uiState.sequence == 2) viewModel.updateShowConnectionPopup(true)
+
+                    // 3의 배수 배지 획득시마다 레벨업 호출
+                    if (uiState.sequence % 3 == 0) viewModel.levelUp()
+
                     viewModel.updateShowBadgePopup(false)
                 }
             )
@@ -265,6 +273,22 @@ fun MapScreen(
         TrophyPopup {
             viewModel.updateShowRewardPopup(false)
             bottomSheetState.hideBottomSheet()
+
+            uiState.merchantAssociationPosition?.let {
+                val userPosition = uiState.userPosition
+
+                viewModel.showNavigatePopup(
+                    "시장상인회"
+                ) {
+                    navigateToKakaoMap(
+                        userPosition.latitude,
+                        userPosition.longitude,
+                        it.latitude,
+                        it.longitude,
+                        context
+                    )
+                }
+            }
         }
     }
 

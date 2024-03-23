@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
@@ -16,6 +15,7 @@ import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import com.beotkkot.tamhumhajang.data.model.PopupType
 import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
+import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -70,19 +70,49 @@ class MapViewModel @Inject constructor(
 
     fun checkIsNearMarker() = viewModelScope.launch {
         val badgePosition = currentState.badgePosition
+        val merchantAssociationPosition = currentState.merchantAssociationPosition
 
         badgePosition?.let {
             val userPosition = currentState.userPosition
 
             if (
-                userPosition.latitude >= badgePosition.latitude - 0.0001 &&
-                userPosition.latitude <= badgePosition.latitude + 0.0001 &&
-                userPosition.longitude >= badgePosition.longitude - 0.0001 &&
-                userPosition.longitude <= badgePosition.longitude + 0.0001
+                userPosition.latitude >= it.latitude - 0.0001 &&
+                userPosition.latitude <= it.latitude + 0.0001 &&
+                userPosition.longitude >= it.longitude - 0.0001 &&
+                userPosition.longitude <= it.longitude + 0.0001
             ) {
                 updateState(currentState.copy(badgePosition = null))
 
                 touch()
+            }
+        }
+        
+        merchantAssociationPosition?.let {
+            val userPosition = currentState.userPosition
+
+            if (
+                userPosition.latitude >= it.latitude - 0.0001 &&
+                userPosition.latitude <= it.latitude + 0.0001 &&
+                userPosition.longitude >= it.longitude - 0.0001 &&
+                userPosition.longitude <= it.longitude + 0.0001
+            ) {
+                updateState(
+                    currentState.copy(
+                        showingToast = ToastType.REWARD,
+                        toastOnClick = {
+                            postEffect(MapContract.Effect.NavigateTo(PROFILE))
+                        }
+                    )
+                )
+            } else {
+                if (currentState.showingToast == ToastType.REWARD) {
+                    updateState(
+                        currentState.copy(
+                            showingToast = null,
+                            toastOnClick = { }
+                        )
+                    )
+                }
             }
         }
     }
@@ -106,9 +136,6 @@ class MapViewModel @Inject constructor(
                     val result = it.data
 
                     setSequence(result.id)
-
-                    // 3의 배수 배지 획득시마다 레벨업 호출
-                    if (result.id % 3 == 0) levelUp()
 
                     when (result.popupType) {
                         PopupType.APP -> {
@@ -155,8 +182,14 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data
 
-                    runBlocking { dataStoreRepository.setIntValue(GRADE, result.level) }
-                    updateState(currentState.copy(showLevelUpPopup = true, levelUpPopup = result, userGrade = result.level))
+                    setLevel(result.level)
+                    updateState(
+                        currentState.copy(
+                            showLevelUpPopup = true,
+                            levelUpPopup = result, 
+                            merchantAssociationPosition = result.badgePosition
+                        )
+                    )
                 }
 
                 is ApiResult.ApiError -> {
@@ -172,9 +205,7 @@ class MapViewModel @Inject constructor(
 
     fun postBookmark(shopId: Int) = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
-
-        Log.d("debugging", "북마크 시점 획득 뱃지 갯수 : ${currentState.sequence}")
-
+        
         apiRepository.postBookmark(userId, shopId).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collect {

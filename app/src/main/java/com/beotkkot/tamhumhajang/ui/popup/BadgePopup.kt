@@ -62,7 +62,7 @@ fun BadgePopup(
 
             Text(
                 text = popup.description,
-                style = TamhumhajangTheme.typography.title2Description.copy(
+                style = TamhumhajangTheme.typography.body2.copy(
                     color = TamhumhajangTheme.colors.color_000000
                 ),
                 textAlign = TextAlign.Center
