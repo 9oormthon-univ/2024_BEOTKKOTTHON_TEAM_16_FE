@@ -43,6 +43,7 @@ import com.beotkkot.tamhumhajang.data.model.response.Badge
 import com.beotkkot.tamhumhajang.data.model.response.Reward
 import com.beotkkot.tamhumhajang.design.component.TopBar
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import com.beotkkot.tamhumhajang.ui.popup.CouponPopup
 
 @Composable
 fun ProfileScreen(
@@ -64,6 +65,15 @@ fun ProfileScreen(
                 is ProfileContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(it.message)
                 }
+            }
+        }
+    }
+
+    if (uiState.showCouponPopup) {
+        uiState.couponId?.let { rewardId ->
+            CouponPopup(rewardId) {
+                viewModel.useReward(rewardId)
+                viewModel.showCouponPopup(false, null)
             }
         }
     }
@@ -236,7 +246,7 @@ fun ProfileScreen(
 
                 RewardBoard(
                     rewards = uiState.bookRows.map { it.reward },
-                    useReward = viewModel::useReward
+                    showCouponPopup = viewModel::showCouponPopup
                 )
             }
 
@@ -350,14 +360,14 @@ private fun StampBoard(
 private fun RewardBoard(
     modifier: Modifier = Modifier,
     rewards: List<Reward>,
-    useReward: (Int) -> Unit
+    showCouponPopup: (Boolean, Int) -> Unit
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         rewards.forEach { reward ->
-            RewardItem(reward, useReward)
+            RewardItem(reward, showCouponPopup)
         }
     }
 }
@@ -365,7 +375,7 @@ private fun RewardBoard(
 @Composable
 private fun RewardItem(
     reward: Reward,
-    useReward: (Int) -> Unit
+    useReward: (Boolean, Int) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -382,7 +392,7 @@ private fun RewardItem(
                 color = Color.Black
             )
             .clickable {
-                if (reward.isAcquired && !reward.isUsed) useReward(reward.id)
+                if (reward.isAcquired && !reward.isUsed) useReward(true, reward.id)
             },
         contentAlignment = Alignment.Center
     ) {

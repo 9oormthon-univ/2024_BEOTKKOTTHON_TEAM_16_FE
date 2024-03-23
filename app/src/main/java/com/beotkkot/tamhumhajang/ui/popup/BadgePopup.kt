@@ -93,7 +93,7 @@ fun BadgePopup(
                 Text(
                     text = "이어서 탐색하기",
                     style = TamhumhajangTheme.typography.title3,
-                    color = TamhumhajangTheme.colors.color_ffffff
+                    color = TamhumhajangTheme.colors.color_000000
                 )
             }
 

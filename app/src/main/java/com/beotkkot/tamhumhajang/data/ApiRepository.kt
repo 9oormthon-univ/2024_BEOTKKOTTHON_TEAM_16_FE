@@ -44,4 +44,9 @@ class ApiRepository @Inject constructor(
         userId: Int
     ) = apiDataSource.postLevelUp(userId)
 
+    fun useReward(
+        userId: Int,
+        trophyId: Int
+    ) = apiDataSource.useReward(userId, trophyId)
+
 }

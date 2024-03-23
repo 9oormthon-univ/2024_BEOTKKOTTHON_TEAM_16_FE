@@ -62,7 +62,7 @@ fun FirstBadgePopup(
                     }
                     append("가 되신 것을 축하드립니다!\n탐험가 배지를 획득하셨어요.")
                 },
-                style = TamhumhajangTheme.typography.title2Description.copy(
+                style = TamhumhajangTheme.typography.body2.copy(
                     color = TamhumhajangTheme.colors.color_000000
                 ),
                 textAlign = TextAlign.Center

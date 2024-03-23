@@ -16,7 +16,10 @@ class ProfileContract {
         val previousImage: String? = null,
         val currentImage: String = "",
         val nextImage: String = "",
-        val bookRows: List<BookRow> = emptyList()
+        val bookRows: List<BookRow> = emptyList(),
+
+        val showCouponPopup: Boolean = false,
+        val couponId: Int? = null
     ) : UiState
 
     sealed class Event : UiEvent {

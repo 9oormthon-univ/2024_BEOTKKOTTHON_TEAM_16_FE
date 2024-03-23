@@ -46,8 +46,8 @@ data class Reward(
     val id: Int,
     @SerializedName("imgUrl")
     val imgUrl: String,
-    @SerializedName("isUsed")
+    @SerializedName("used")
     val isUsed: Boolean,
-    @SerializedName("isAcquired")
+    @SerializedName("acquired")
     val isAcquired: Boolean
 )

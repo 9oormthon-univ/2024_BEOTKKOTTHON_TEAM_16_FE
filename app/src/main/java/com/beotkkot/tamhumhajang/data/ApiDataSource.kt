@@ -66,4 +66,11 @@ class ApiDataSource @Inject constructor(
     ) = flow {
         emit(apiService.postLevelUp(userId))
     }.flowOn(ioDispatcher)
+
+    fun useReward(
+        userId: Int,
+        trophyId: Int
+    ) = flow {
+        emit(apiService.useReward(userId, trophyId))
+    }.flowOn(ioDispatcher)
 }

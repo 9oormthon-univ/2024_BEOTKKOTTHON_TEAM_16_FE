@@ -36,11 +36,12 @@ import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 
 @Composable
 fun CouponPopup(
-    onClose: () -> Unit = { }
+    rewardId: Int,
+    onClose: (Int) -> Unit = { }
 ) {
     val isButtonClicked = remember { mutableStateOf(false) }
     Dialog(
-        onDismissRequest = onClose,
+        onDismissRequest = { onClose(rewardId) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
@@ -139,12 +140,10 @@ fun CouponPopup(
                             contentColor = TamhumhajangTheme.colors.color_ffffff
                         ),
                         contentPadding = PaddingValues(vertical = 10.dp),
-                        onClick = {
-                            isButtonClicked.value = !isButtonClicked.value
-                        }
+                        onClick = { onClose(rewardId) }
                     ) {
                         Text(
-                            text = if (isButtonClicked.value) "트로피 사용완료" else "트로피 사용하기",
+                            text = "트로피 사용하기",
                             style = TamhumhajangTheme.typography.body2,
                             color = TamhumhajangTheme.colors.color_ffffff
                         )

@@ -6,6 +6,7 @@ import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
@@ -59,7 +60,33 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun useReward(rewardId: Int) {
+    fun useReward(rewardId: Int) = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        apiRepository.useReward(userId, rewardId).collect {
+            when (it) {
+                is ApiResult.Success -> {
+                    getProfile()
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(ProfileContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(ProfileContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
         getProfile()
+    }
+
+    fun showCouponPopup(isShow: Boolean, rewardId: Int?) {
+        updateState(
+            currentState.copy(
+                showCouponPopup = isShow,
+                couponId = rewardId
+            )
+        )
     }
 }

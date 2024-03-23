@@ -10,6 +10,7 @@ import com.beotkkot.tamhumhajang.data.model.response.QuestListResponse
 import com.beotkkot.tamhumhajang.data.model.response.RecommendMarketResponse
 import com.beotkkot.tamhumhajang.data.model.response.ShopListResponse
 import com.beotkkot.tamhumhajang.data.model.response.TouchResponse
+import com.beotkkot.tamhumhajang.data.model.response.UseRewardResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -62,4 +63,10 @@ interface ApiService {
     suspend fun postLevelUp(
         @Path("userId") userId: Int,
     ): ApiResult<LevelUpResponse>
+
+    @POST("users/{userId}/trophy/{trophyId}")
+    suspend fun useReward(
+        @Path("userId") userId: Int,
+        @Path("trophyId") trophyId: Int
+    ): ApiResult<UseRewardResponse>
 }

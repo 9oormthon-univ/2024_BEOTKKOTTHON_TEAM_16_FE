@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -122,7 +123,8 @@ private fun QuestItem(
                     .data(quest.imgUrl.ifEmpty { R.drawable.ic_shop })
                     .build(),
                 contentDescription = "IC_SHOP",
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillWidth,
+                filterQuality = FilterQuality.Low
             )
         }
 
