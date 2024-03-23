@@ -2,6 +2,7 @@ package com.beotkkot.tamhumhajang.ui.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -124,7 +125,7 @@ fun ProfileScreen(
                             )
                             .padding(10.dp)
                             .clip(CircleShape),
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.Fit
                     )
                 } else {
                     Spacer(modifier = Modifier.size(72.dp))
@@ -143,7 +144,7 @@ fun ProfileScreen(
                         )
                         .padding(10.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Fit
                 )
 
                 AsyncImage(
@@ -159,7 +160,7 @@ fun ProfileScreen(
                         )
                         .padding(10.dp)
                         .clip(CircleShape),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Fit
                 )
             }
 
@@ -234,7 +235,8 @@ fun ProfileScreen(
                 )
 
                 RewardBoard(
-                    rewards = uiState.bookRows.map { it.reward }
+                    rewards = uiState.bookRows.map { it.reward },
+                    useReward = viewModel::useReward
                 )
             }
 
@@ -279,7 +281,7 @@ private fun StampBoard(
                                 .build(),
                             contentDescription = "IMG_BADGE",
                             modifier = Modifier.size(50.dp),
-                            contentScale = ContentScale.FillBounds
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
@@ -307,7 +309,7 @@ private fun StampBoard(
                                 .build(),
                             contentDescription = "IMG_BADGE",
                             modifier = Modifier.size(50.dp),
-                            contentScale = ContentScale.FillBounds
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
@@ -335,7 +337,7 @@ private fun StampBoard(
                                 .build(),
                             contentDescription = "IMG_BADGE",
                             modifier = Modifier.size(50.dp),
-                            contentScale = ContentScale.FillBounds
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
@@ -348,20 +350,22 @@ private fun StampBoard(
 private fun RewardBoard(
     modifier: Modifier = Modifier,
     rewards: List<Reward>,
+    useReward: (Int) -> Unit
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         rewards.forEach { reward ->
-            RewardItem(reward)
+            RewardItem(reward, useReward)
         }
     }
 }
 
 @Composable
 private fun RewardItem(
-    reward: Reward
+    reward: Reward,
+    useReward: (Int) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -376,7 +380,10 @@ private fun RewardItem(
                 width = 1.dp,
                 shape = RoundedCornerShape(16.dp),
                 color = Color.Black
-            ),
+            )
+            .clickable {
+                if (reward.isAcquired && !reward.isUsed) useReward(reward.id)
+            },
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(

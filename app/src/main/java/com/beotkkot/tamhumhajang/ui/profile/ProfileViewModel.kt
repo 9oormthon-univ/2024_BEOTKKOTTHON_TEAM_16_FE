@@ -58,4 +58,8 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun useReward(rewardId: Int) {
+        getProfile()
+    }
 }
