@@ -2,7 +2,7 @@
 <p align = "center">전통 시장의 가치를 재조명하다, <br>즐거운 시장 모험 속 ‘단골’ 등록으로 상인과 소비자를 연결하는 서비스 <b>탐험하장!</b> 입니다.</p>
 
 
-![01 표지(지완)](https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_16_FE/assets/150661115/e29e30ca-ed8d-416f-9834-b473aabd5672)
+<img width="1920" alt="22" src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_16_FE/assets/150661115/3f35aa34-5c32-4d4c-849b-0c98e456c4fc">
 
 <h2>사용 기술 스택</h2>
 
