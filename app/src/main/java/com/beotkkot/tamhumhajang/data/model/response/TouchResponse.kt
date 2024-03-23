@@ -43,13 +43,13 @@ data class QuizPopup(
 )
 
 data class QuizWarningPopup(
-    val title: String,  // 제목
+    val title: String,  // 제목 녹두 하나 주면 안 잡아먹지!
     val name: String, // 몬스터 이름 ex) 호랑이 (어흥),
     val confirm: String // 떡 구하러 가기, 과일 구하러 가기
 )
 
 data class QuizQuestionPopup(
-    val title: String,  // 제목
+    val title: String,  // 제목 녹두 하나 주면 안 잡아먹지!
     val description: String,    // 아래의 문제를 맞추어, 돌발 상황을 해결해 보세요!,
     val question: String,   // 마천 시장은 전문시장이다.
     val negative: String,   // O

@@ -65,7 +65,7 @@ fun TrophyPopup(
                 Spacer(modifier = Modifier.height(13.dp))
 
                 Text(
-                    text = "꺄 트로피네요! \u2028 \n퀘스트 달성 완료를 축하드립니다.\n" +
+                    text = "꺄 트로피네요!\n퀘스트 달성 완료를 축하드립니다.\n" +
                             "상인회로 이동해서 상품을 받아보세요✨",
                     style = TamhumhajangTheme.typography.body2.copy(
                         color = TamhumhajangTheme.colors.color_000000

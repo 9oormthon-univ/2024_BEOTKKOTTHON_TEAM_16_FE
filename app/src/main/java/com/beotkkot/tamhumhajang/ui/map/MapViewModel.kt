@@ -138,27 +138,24 @@ class MapViewModel @Inject constructor(
                     setSequence(result.id)
 
                     when (result.popupType) {
-                        PopupType.APP -> {
-                            updateState(
-                                currentState.copy(
-                                    showBadgePopup = true,
-                                    badgePopup = result.badgePopup
-                                )
-                            )
-                        }
-
-                        PopupType.Location -> {
+                        PopupType.APP, PopupType.Location -> {
                             updateState(
                                 currentState.copy(
                                     showBadgePopup = true,
                                     badgePopup = result.badgePopup,
-                                    badgePosition = null
+                                    badgePosition = result.badgePosition
                                 )
                             )
                         }
 
                         PopupType.Quiz -> {
-                            //
+                            updateState(
+                                currentState.copy(
+                                    showQuizWarningPopup = true,
+                                    quizWarningPopup = result.quizPopup?.warning,
+                                    quizQuestionPopup = result.quizPopup?.question
+                                )
+                            )
                         }
                     }
                 }
@@ -231,6 +228,32 @@ class MapViewModel @Inject constructor(
         }
     }
 
+    fun verifyAnswer(answer: String) = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        apiRepository.verifyAnswer(userId, answer).collect {
+            when (it) {
+                is ApiResult.Success -> {
+                    updateState(currentState.copy(showQuizQuestionPopup = false))
+
+                    val result = it.data
+
+                    if (result.isCorrect) {
+                        updateState(currentState.copy(badgePosition = null))
+                        touch()
+                    }
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
 
     fun getShopsLocation() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }

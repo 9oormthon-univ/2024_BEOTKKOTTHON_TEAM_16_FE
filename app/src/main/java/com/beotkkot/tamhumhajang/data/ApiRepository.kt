@@ -22,14 +22,14 @@ class ApiRepository @Inject constructor(
         userId: Int
     ) = apiDataSource.getQuests(userId)
 
-    fun getBadge(
-        userId: Int,
-        sequence: Int
-    ) = apiDataSource.getBadge(userId, sequence)
-
     fun postTouch(
         userId: Int
     ) = apiDataSource.postTouch(userId)
+
+    fun verifyAnswer(
+        userId: Int,
+        answer: String
+    ) = apiDataSource.verifyAnswer(userId, answer)
 
     fun getBookmarks(
         userId: Int

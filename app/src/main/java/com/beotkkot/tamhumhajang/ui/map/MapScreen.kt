@@ -196,19 +196,21 @@ fun MapScreen(
         ) {
             viewModel.updateShowQuestPopup(false)
 
-            val market = uiState.recommendMarkets[1]
-            val userPosition = uiState.userPosition
+            if (uiState.sequence == 1) {
+                val market = uiState.recommendMarkets[1]
+                val userPosition = uiState.userPosition
 
-            if (uiState.sequence == 1) viewModel.showNavigatePopup(
-                "마천시장"
-            ) {
-                navigateToKakaoMap(
-                    userPosition.latitude,
-                    userPosition.longitude,
-                    market.latitude,
-                    market.longitude,
-                    context
-                )
+                viewModel.showNavigatePopup(
+                    "마천시장"
+                ) {
+                    navigateToKakaoMap(
+                        userPosition.latitude,
+                        userPosition.longitude,
+                        market.latitude,
+                        market.longitude,
+                        context
+                    )
+                }
             }
         }
     }
@@ -293,6 +295,12 @@ fun MapScreen(
         }
     }
 
+    // TODO 퀴즈 팝업 연결
+    // 퀴즈 경고 팝업을 띄우고 지우면 isShowQuizWarningPopup = false, isShowQuizQuestionPopup = true
+    // isShowQuizQuestion 에서 버튼을 고르면 viewModel.verifyAnswer(선택한 답) 호출
+    //
+
+
     if (uiState.showConnectionPopup) {
         ConnectionPopup {
             viewModel.updateShowConnectionPopup(false)
@@ -335,18 +343,6 @@ fun MapScreen(
                 }
             }
         ) {
-            Label(
-                position = uiState.userPosition,
-                iconResId = if (uiState.userGrade == 1) {
-                    R.drawable.img_explorer_level_1
-                } else {
-                    R.drawable.img_explorer_level_2
-                },
-                tag = "나"
-            ) {
-
-            }
-
             uiState.shops.forEach { shop ->
                 Label(
                     position = LatLng.from(shop.latitude, shop.longitude),
@@ -384,6 +380,18 @@ fun MapScreen(
                     iconResId = R.drawable.img_merchange_association,
                     tag = "시장 상인회"
                 )
+            }
+
+            Label(
+                position = uiState.userPosition,
+                iconResId = if (uiState.userGrade == 1) {
+                    R.drawable.img_explorer_level_1
+                } else {
+                    R.drawable.img_explorer_level_2
+                },
+                tag = "나"
+            ) {
+
             }
         }
 

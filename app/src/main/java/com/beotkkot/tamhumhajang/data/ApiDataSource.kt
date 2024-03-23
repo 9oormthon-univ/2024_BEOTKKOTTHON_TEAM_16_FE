@@ -35,17 +35,17 @@ class ApiDataSource @Inject constructor(
         emit(apiService.getQuests(userId))
     }.flowOn(ioDispatcher)
 
-    fun getBadge(
-        userId: Int,
-        sequence: Int
-    ) = flow {
-        emit(apiService.getBadge(userId, sequence))
-    }.flowOn(ioDispatcher)
-
     fun postTouch(
         userId: Int
     ) = flow {
         emit(apiService.postTouch(userId))
+    }.flowOn(ioDispatcher)
+
+    fun verifyAnswer(
+        userId: Int,
+        answer: String
+    ) = flow {
+        emit(apiService.verifyAnswer(userId, answer))
     }.flowOn(ioDispatcher)
 
     fun getBookmarks(

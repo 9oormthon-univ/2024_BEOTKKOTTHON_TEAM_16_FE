@@ -9,6 +9,8 @@ import com.beotkkot.tamhumhajang.data.model.RecommendMarket
 import com.beotkkot.tamhumhajang.data.model.response.BadgePopup
 import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
 import com.beotkkot.tamhumhajang.data.model.response.LevelUpResponse
+import com.beotkkot.tamhumhajang.data.model.response.QuizQuestionPopup
+import com.beotkkot.tamhumhajang.data.model.response.QuizWarningPopup
 import com.beotkkot.tamhumhajang.data.model.response.Shop
 import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.kakao.vectormap.LatLng
@@ -39,6 +41,12 @@ class MapContract {
 
         val showBadgePopup: Boolean = false,
         val badgePopup: BadgePopup? = null,
+
+        val showQuizWarningPopup: Boolean = false,
+        val quizWarningPopup: QuizWarningPopup? = null,
+
+        val showQuizQuestionPopup: Boolean = false,
+        val quizQuestionPopup: QuizQuestionPopup? = null,
 
         val showConnectionPopup: Boolean = false,
 

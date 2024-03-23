@@ -1,7 +1,6 @@
 package com.beotkkot.tamhumhajang.data
 
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
-import com.beotkkot.tamhumhajang.data.model.response.BadgeResponse
 import com.beotkkot.tamhumhajang.data.model.response.BookmarkListResponse
 import com.beotkkot.tamhumhajang.data.model.response.BookmarkResponse
 import com.beotkkot.tamhumhajang.data.model.response.LevelUpResponse
@@ -12,6 +11,7 @@ import com.beotkkot.tamhumhajang.data.model.response.RecommendMarketResponse
 import com.beotkkot.tamhumhajang.data.model.response.ShopListResponse
 import com.beotkkot.tamhumhajang.data.model.response.TouchResponse
 import com.beotkkot.tamhumhajang.data.model.response.UseRewardResponse
+import com.beotkkot.tamhumhajang.data.model.response.VerifyAnswerResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -38,16 +38,16 @@ interface ApiService {
         @Path("userId") userId: Int
     ): ApiResult<QuestListResponse>
 
-    @GET("users/{userId}/badge/{sequence}")
-    suspend fun getBadge(
-        @Path("userId") userId: Int,
-        @Path("sequence") sequence: Int
-    ): ApiResult<BadgeResponse>
-
     @POST("users/{userId}/touch")
     suspend fun postTouch(
         @Path("userId") userId: Int
     ): ApiResult<TouchResponse>
+
+    @POST("users/{userId}/answer/{answer}")
+    suspend fun verifyAnswer(
+        @Path("userId") userId: Int,
+        @Path("answer") answer: String
+    ): ApiResult<VerifyAnswerResponse>
 
     @GET("users/{userId}/bookmarks")
     suspend fun getBookmarks(
