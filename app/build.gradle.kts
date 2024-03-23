@@ -129,9 +129,6 @@ dependencies {
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    implementation("androidx.compose.foundation:foundation:1.6.3")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
-
     // Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
@@ -156,7 +153,4 @@ dependencies {
     implementation("com.kakao.maps.open:android:2.9.5")
 
     implementation("com.google.android.gms:play-services-location:21.2.0")
-
-    // Onboarding
-    implementation ("com.google.accompanist:accompanist-pager:0.34.0")
 }

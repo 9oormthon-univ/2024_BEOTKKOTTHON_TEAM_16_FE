@@ -1,5 +1,6 @@
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -36,21 +39,19 @@ import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.MAP
 import com.beotkkot.tamhumhajang.ui.ONBOARDING
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(
     appState: AppState,
     nickname: String
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 3 })
 
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         HorizontalPager(
-            count = 3,
             state = pagerState,
             modifier = Modifier
                 .weight(1f)
