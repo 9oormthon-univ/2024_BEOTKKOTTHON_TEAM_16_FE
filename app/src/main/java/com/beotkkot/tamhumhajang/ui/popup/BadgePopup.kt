@@ -24,20 +24,13 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
-import com.beotkkot.tamhumhajang.data.model.BadgePopup
+import com.beotkkot.tamhumhajang.data.model.response.BadgePopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 
-val badgePopupDummy = BadgePopup(
-    title = "탐색의 시작 배지 획득\uD83D\uDD25",
-    description = "시장의 첫 탐색의 시작을 축하드립니다!\n탐색의 시작 배지를 획득하셨어요.",
-    imgUrl = "",
-    positive = "이어서 탐험하기",
-    negative = "도감 이동하기"
-)
 
 @Composable
 fun BadgePopup(
-    popup: BadgePopup = badgePopupDummy,
+    popup: BadgePopup,
     onConfirm: () -> Unit,
     navigateToProfile: () -> Unit,
     onClose: () -> Unit

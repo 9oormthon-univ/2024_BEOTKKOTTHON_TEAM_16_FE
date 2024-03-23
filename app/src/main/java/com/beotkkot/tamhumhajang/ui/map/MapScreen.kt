@@ -224,19 +224,22 @@ fun MapScreen(
     if (uiState.showBadgePopup) {
         Log.d("debugging", "뱃지 획득 갯수 : ${uiState.sequence}")
 
-        BadgePopup(
-            onConfirm = {
-                if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
-                viewModel.updateShowBadgePopup(false)
-            },
-            navigateToProfile = {
-                appState.navigate(PROFILE)
-            },
-            onClose = {
-                if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
-                viewModel.updateShowBadgePopup(false)
-            }
-        )
+        uiState.badgePopup?.let { popUp ->
+            BadgePopup(
+                popup = popUp,
+                onConfirm = {
+                    if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
+                    viewModel.updateShowBadgePopup(false)
+                },
+                navigateToProfile = {
+                    appState.navigate(PROFILE)
+                },
+                onClose = {
+                    if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
+                    viewModel.updateShowBadgePopup(false)
+                }
+            )
+        }
     }
 
     if (uiState.showConnectionPopup) {
