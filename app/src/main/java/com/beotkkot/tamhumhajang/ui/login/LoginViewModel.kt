@@ -7,6 +7,7 @@ import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.GRADE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.IS_NOT_FIRST_LAUNCH
+import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import com.beotkkot.tamhumhajang.ui.LOGIN
 import com.beotkkot.tamhumhajang.ui.MAP
@@ -40,6 +41,7 @@ class LoginViewModel @Inject constructor(
                     runBlocking {
                         dataStoreRepository.setIntValue(USER_ID, result.id)
                         dataStoreRepository.setIntValue(GRADE, result.grade)
+                        dataStoreRepository.setIntValue(SEQUENCE, result.getUserItemCount)
                     }
                     if (isNotFirstLaunch) {
                         postEffect(LoginContract.Effect.NavigateTo(MAP))

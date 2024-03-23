@@ -10,5 +10,7 @@ data class LoginResponse(
     @SerializedName("grade")
     val grade: Int,
     @SerializedName("createdAt")
-    val createdAt: String
+    val createdAt: String,
+    @SerializedName("getUserItemCount")
+    val getUserItemCount: Int
 )
