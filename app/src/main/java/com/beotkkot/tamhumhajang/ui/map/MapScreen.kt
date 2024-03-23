@@ -209,12 +209,10 @@ fun MapScreen(
     if (uiState.showFirstBadgePopup) {
         FirstBadgePopup(
             onClick = {
-                viewModel.getItemBadge()
                 viewModel.updateShowFirstBadgePopup(false)
                 viewModel.showRecommendMarkets()
             },
             onClose = {
-                viewModel.getItemBadge()
                 viewModel.updateShowFirstBadgePopup(false)
                 viewModel.showRecommendMarkets()
             }

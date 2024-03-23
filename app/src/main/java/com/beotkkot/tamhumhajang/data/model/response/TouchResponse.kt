@@ -15,7 +15,7 @@ import com.google.gson.annotations.SerializedName
 data class TouchResponse(
     @SerializedName("popupType")
     val popupType: PopupType,
-    @SerializedName("id")
+    @SerializedName("itemId")
     val id: Int, // 현재 수행 중인 퀘스트
 
     //@SerializedName("badgePosition")

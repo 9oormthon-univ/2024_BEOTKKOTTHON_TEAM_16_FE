@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
@@ -82,11 +81,9 @@ class MapViewModel @Inject constructor(
         }
     }
 
-    fun getItemBadge() = viewModelScope.launch {
-        val sequence = currentState.sequence
-
-        updateState(currentState.copy(sequence = sequence + 1))
-        runBlocking { dataStoreRepository.setIntValue(SEQUENCE, sequence + 1) }
+    fun setSequence(itemCount: Int) = viewModelScope.launch {
+        updateState(currentState.copy(sequence = itemCount))
+        runBlocking { dataStoreRepository.setIntValue(SEQUENCE, itemCount) }
     }
 
     fun touch() = viewModelScope.launch {
@@ -97,10 +94,7 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data
 
-                    getItemBadge()
-
-                    Log.d("debugging", "뱃지 획득 : $result")
-
+                    setSequence(result.id)
 
                     if (result.id % 3 == 0) {
                         // TODO 레벨업 API 호출
