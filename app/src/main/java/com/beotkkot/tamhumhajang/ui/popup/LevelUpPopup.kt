@@ -25,20 +25,11 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
-import com.beotkkot.tamhumhajang.data.model.LevelUpIntroducePopup
+import com.beotkkot.tamhumhajang.data.model.response.LevelUpResponse
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
-
-val levelUpDummy = LevelUpIntroducePopup(
-    title = "Silver Level UP !",
-    grade = "장터 보물 사냥꾼",
-    imgUrl = "",
-    description = "우와, 벌써 배지를 2개나 획득하셨군요 ?!\n장터 보물 사냥꾼이 되신 것을 축하드립니다!",
-    confirm = "이어서 탐색하기"
-)
-
 @Composable
 fun LevelUpPopup(
-    popup: LevelUpIntroducePopup = levelUpDummy,
+    popup: LevelUpResponse,
     onClick: () -> Unit,
     onClose: () -> Unit
 ) {
@@ -61,7 +52,7 @@ fun LevelUpPopup(
             AsyncImage(
                 modifier = Modifier.width(83.dp).height(50.dp),
                 model = ImageRequest.Builder(context)
-                    .data(R.drawable.ic_level_silver)
+                    .data(popup.tierImgUrl.ifEmpty { R.drawable.ic_level_silver })
                     .build(),
                 contentDescription = "IMG_TIER",
                 contentScale = ContentScale.Crop
@@ -89,7 +80,7 @@ fun LevelUpPopup(
 
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(popup.imgUrl.ifEmpty { R.drawable.img_silver })
+                    .data(popup.characterImgUrl.ifEmpty { R.drawable.img_silver })
                     .build(),
                 contentDescription = "IMG_TIER",
                 contentScale = ContentScale.Crop

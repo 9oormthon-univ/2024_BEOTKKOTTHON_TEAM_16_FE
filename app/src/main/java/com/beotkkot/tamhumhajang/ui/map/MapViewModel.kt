@@ -303,6 +303,14 @@ class MapViewModel @Inject constructor(
         updateState(currentState.copy(showQuestPopup = isShow))
     }
 
+    fun updateShowLevelUpPopup(isShow: Boolean) {
+        updateState(currentState.copy(showLevelUpPopup = isShow))
+    }
+
+    fun updateShowRewardPopup(isShow: Boolean) {
+        updateState(currentState.copy(showRewardPopup = true))
+    }
+
     inner class CustomLocationCallback : LocationCallback() {
 
         override fun onLocationResult(locationResult: LocationResult) {

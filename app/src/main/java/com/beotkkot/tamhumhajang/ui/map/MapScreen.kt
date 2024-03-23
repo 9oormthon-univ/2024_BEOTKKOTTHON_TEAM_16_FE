@@ -42,6 +42,7 @@ import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
 import com.beotkkot.tamhumhajang.ui.popup.BadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.ConnectionPopup
 import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
+import com.beotkkot.tamhumhajang.ui.popup.LevelUpPopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
 import com.beotkkot.tamhumhajang.ui.toast.BookmarkToast
@@ -237,6 +238,21 @@ fun MapScreen(
                     viewModel.updateShowBadgePopup(false)
                 }
             )
+        }
+    }
+
+    if (uiState.showLevelUpPopup) {
+        uiState.levelUpPopup?.let { popup ->
+            LevelUpPopup(
+                popup = popup,
+                onClick = {
+                    viewModel.updateShowLevelUpPopup(false)
+                    viewModel.updateShowRewardPopup(true)
+                }
+            ) {
+                viewModel.updateShowLevelUpPopup(false)
+                viewModel.updateShowRewardPopup(true)
+            }
         }
     }
 
