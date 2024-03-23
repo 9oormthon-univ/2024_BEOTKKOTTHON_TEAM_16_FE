@@ -15,10 +15,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,45 +26,13 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.R
-import com.beotkkot.tamhumhajang.data.model.RewardPopup
 import com.beotkkot.tamhumhajang.design.component.TamhumPopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 
-val trophysDummy = listOf(
-    RewardPopup(
-        0,
-        "꺄 트로피네요!\n퀘스트 달성 완료를 축하드립니다.\n" +
-                "상인회로 이동해서 상품을 받아보세요\uD83C\uDF1F  ",
-        "",
-        0.0,
-        0.0
-    ),
-    RewardPopup(
-        0,
-        "꺄 두 번째 트로피네요!\n퀘스트 달성 완료를 축하드립니다.\n" +
-                "상인회로 이동해서 상품을 받아보세요\uD83C\uDF1F  ",
-        "",
-        0.0,
-        0.0
-    ),
-    RewardPopup(
-        0,
-        "꺄 세 번째 트로피네요!\n퀘스트 달성 완료를 축하드립니다.\n" +
-                "상인회로 이동해서 상품을 받아보세요\uD83C\uDF1F  ",
-        "",
-        0.0,
-        0.0
-    )
-)
-
 @Composable
 fun TrophyPopup(
-    markets: List<RewardPopup> = trophysDummy,
     onClose: () -> Unit = { }
 ) {
-    var selectedMarketPosition by remember { mutableIntStateOf(1) }
-    val currentMarket = markets[selectedMarketPosition]
-
     val context = LocalContext.current
 
     TamhumPopup(
@@ -101,7 +65,8 @@ fun TrophyPopup(
                 Spacer(modifier = Modifier.height(13.dp))
 
                 Text(
-                    text = currentMarket.description,
+                    text = "꺄 트로피네요! \u2028\n퀘스트 달성 완료를 축하드립니다.\n" +
+                            "상인회로 이동해서 상품을 받아보세요✨",
                     style = TamhumhajangTheme.typography.body2.copy(
                         color = TamhumhajangTheme.colors.color_000000
                     ),
@@ -112,7 +77,7 @@ fun TrophyPopup(
 
                 AsyncImage(
                     model = ImageRequest.Builder(context)
-                        .data(currentMarket.imgUrl.ifEmpty { R.drawable.img_trophy })
+                        .data(R.drawable.img_trophy)
                         .build(),
                     contentDescription = "IMG_TROPHY",
                     modifier = Modifier

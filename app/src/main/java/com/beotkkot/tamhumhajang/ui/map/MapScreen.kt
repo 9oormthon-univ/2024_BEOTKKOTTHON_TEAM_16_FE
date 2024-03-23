@@ -45,6 +45,7 @@ import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.LevelUpPopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
+import com.beotkkot.tamhumhajang.ui.popup.TrophyPopup
 import com.beotkkot.tamhumhajang.ui.toast.BookmarkToast
 import com.beotkkot.tamhumhajang.ui.toast.CheckProfileToast
 import com.beotkkot.tamhumhajang.ui.toast.NavigateToast
@@ -142,6 +143,7 @@ fun MapScreen(
         }
     }
 
+    // 처음 시작시 뱃지 하나 획득, 초기 상태에서 추천시장 팝업 열을 시 뱃지마커 띄워줌
     if (uiState.showRecommendMarketPopup) {
         RecommendMarketPopup(
             markets = uiState.recommendMarkets,
@@ -184,6 +186,7 @@ fun MapScreen(
         )
     }
 
+    // 첫 시작 후 퀘스트 목록 화면 띄운다면 마천 시장 이동 토스트 메시지 출력
     if (uiState.showQuestPopup) {
         QuestListPopup(
             quests = uiState.quests
@@ -193,7 +196,7 @@ fun MapScreen(
             val market = uiState.recommendMarkets[1]
             val userPosition = uiState.userPosition
 
-            if (uiState.sequence == 0) viewModel.showNavigatePopup(
+            if (uiState.sequence == 1) viewModel.showNavigatePopup(
                 "마천시장"
             ) {
                 navigateToKakaoMap(
@@ -253,6 +256,12 @@ fun MapScreen(
                 viewModel.updateShowLevelUpPopup(false)
                 viewModel.updateShowRewardPopup(true)
             }
+        }
+    }
+
+    if (uiState.showRewardPopup) {
+        TrophyPopup {
+            viewModel.updateShowRewardPopup(false)
         }
     }
 

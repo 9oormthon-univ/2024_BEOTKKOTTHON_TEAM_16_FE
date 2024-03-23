@@ -31,7 +31,7 @@ class MapContract {
         val shops: List<Shop> = emptyList(),
         val badgePosition: BadgePosition? = null,
 
-        val showFirstBadgePopup: Boolean = true,
+        val showFirstBadgePopup: Boolean = false,
 
         val showBadgePopup: Boolean = false,
         val badgePopup: BadgePopup? = null,

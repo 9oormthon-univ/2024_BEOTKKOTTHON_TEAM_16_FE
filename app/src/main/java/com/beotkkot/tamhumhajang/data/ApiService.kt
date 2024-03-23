@@ -3,7 +3,7 @@ package com.beotkkot.tamhumhajang.data
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.model.response.BadgeResponse
 import com.beotkkot.tamhumhajang.data.model.response.BookmarkResponse
-import com.beotkkot.tamhumhajang.data.model.response.LevelUpPopupResponse
+import com.beotkkot.tamhumhajang.data.model.response.LevelUpResponse
 import com.beotkkot.tamhumhajang.data.model.response.LoginResponse
 import com.beotkkot.tamhumhajang.data.model.response.ProfileResponse
 import com.beotkkot.tamhumhajang.data.model.response.QuestListResponse
@@ -58,9 +58,8 @@ interface ApiService {
         @Path("userId") userId: Int
     ): ApiResult<ProfileResponse>
 
-    @GET("users/{userId}/level/{sequence}")
-    suspend fun getLevelUpPopup(
+    @POST("users/{userId}/levelUp")
+    suspend fun postLevelUp(
         @Path("userId") userId: Int,
-        @Path("sequence") sequence: Int
-    ): ApiResult<LevelUpPopupResponse>
+    ): ApiResult<LevelUpResponse>
 }

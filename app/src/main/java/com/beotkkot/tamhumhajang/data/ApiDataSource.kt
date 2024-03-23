@@ -61,10 +61,9 @@ class ApiDataSource @Inject constructor(
         emit(apiService.getProfile(userId))
     }.flowOn(ioDispatcher)
 
-    fun getLevelUpPopup(
-        userId: Int,
-        sequence: Int
+    fun postLevelUp(
+        userId: Int
     ) = flow {
-        emit(apiService.getLevelUpPopup(userId, sequence))
+        emit(apiService.postLevelUp(userId))
     }.flowOn(ioDispatcher)
 }

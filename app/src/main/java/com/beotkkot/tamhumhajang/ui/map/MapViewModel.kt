@@ -59,6 +59,9 @@ class MapViewModel @Inject constructor(
         val sequence = runBlocking { dataStoreRepository.getIntValue(SEQUENCE).first() }
         updateState(currentState.copy(sequence = sequence))
 
+        // 첫 시작 시 배지 획득 팝업
+        if (sequence == 1) updateShowFirstBadgePopup(true)
+
         getShopsLocation()
     }
 
@@ -96,9 +99,8 @@ class MapViewModel @Inject constructor(
 
                     setSequence(result.id)
 
-                    if (result.id % 3 == 0) {
-                        // TODO 레벨업 API 호출
-                    }
+                    // 3의 배수 배지 획득시마다 레벨업 호출
+                    if (result.id % 3 == 0) levelUp()
 
                     when (result.popupType) {
                         PopupType.APP -> {
@@ -124,6 +126,28 @@ class MapViewModel @Inject constructor(
                             //
                         }
                     }
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun levelUp() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        apiRepository.postLevelUp(userId).collect {
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data
+
+                    updateState(currentState.copy(showLevelUpPopup = true, levelUpPopup = result))
                 }
 
                 is ApiResult.ApiError -> {

@@ -40,9 +40,8 @@ class ApiRepository @Inject constructor(
         userId: Int
     ) = apiDataSource.getProfile(userId)
 
-    fun getLevelUpPopup(
-        userId: Int,
-        sequence: Int
-    ) = apiDataSource.getLevelUpPopup(userId, sequence)
+    fun postLevelUp(
+        userId: Int
+    ) = apiDataSource.postLevelUp(userId)
 
 }
