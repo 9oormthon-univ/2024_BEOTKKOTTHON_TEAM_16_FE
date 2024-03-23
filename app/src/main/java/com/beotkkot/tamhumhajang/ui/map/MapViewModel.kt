@@ -296,12 +296,13 @@ class MapViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
-                    val result = it.data.quest
+                    val result = it.data
 
                     updateState(
                         currentState.copy(
                             showQuestPopup = true,
-                            quests = result
+                            quests = result.quest,
+                            questSequence = result.sequence
                         )
                     )
                 }

@@ -51,6 +51,7 @@ class MapContract {
         val recommendMarkets: List<RecommendMarket> = emptyList(),
 
         val showQuestPopup: Boolean = false,
+        val questSequence: Int = 1,
         val quests: List<Quest> = emptyList()
     ) : UiState
 

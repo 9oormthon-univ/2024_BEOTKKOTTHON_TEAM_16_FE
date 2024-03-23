@@ -191,6 +191,7 @@ fun MapScreen(
     // 첫 시작 후 퀘스트 목록 화면 띄운다면 마천 시장 이동 토스트 메시지 출력
     if (uiState.showQuestPopup) {
         QuestListPopup(
+            sequence = uiState.questSequence,
             quests = uiState.quests
         ) {
             viewModel.updateShowQuestPopup(false)

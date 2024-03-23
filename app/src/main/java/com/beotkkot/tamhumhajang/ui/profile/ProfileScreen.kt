@@ -1,5 +1,6 @@
 package com.beotkkot.tamhumhajang.ui.profile
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -214,6 +215,8 @@ fun ProfileScreen(
             )
 
             Spacer(modifier = Modifier.height(6.dp))
+
+            Log.d("debugging", "도장판 : ${uiState.bookRows}")
 
             val rewardCount = uiState.bookRows.map { it.reward }.count { it.isAcquired }
 

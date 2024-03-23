@@ -28,34 +28,10 @@ import com.beotkkot.tamhumhajang.data.model.Quest
 import com.beotkkot.tamhumhajang.design.component.TamhumPopup
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 
-val questDummy = listOf(
-    Quest(
-        0,
-        "첫 시작",
-        true,
-        "탐험가 배지 획득 완료",
-        ""
-    ),
-    Quest(
-        0,
-        "단골 손님",
-        false,
-        "좋아하는 상점을\n단골로 등록해보세요!",
-        ""
-    ),
-    Quest(
-        0,
-        "첫 시장 단험",
-        false,
-        "아래는 직접 시장을\n탐험해볼 시간이예요!",
-        ""
-    )
-)
-
 @Composable
 fun QuestListPopup(
-    title: String = "첫 번째 퀘스트",
-    quests: List<Quest> = questDummy,
+    sequence: Int,
+    quests: List<Quest>,
     onClose: () -> Unit
 ) {
     TamhumPopup(
@@ -76,8 +52,10 @@ fun QuestListPopup(
                 alignment = Alignment.CenterVertically
             )
         ) {
+            val sequenceText = if (sequence == 1) "첫" else if (sequence == 2) "두" else "세"
+
             Text(
-                text = title,
+                text = "$sequenceText 번째 퀘스트",
                 style = TamhumhajangTheme.typography.largeTitle
             )
 

@@ -5,7 +5,6 @@ import com.beotkkot.tamhumhajang.common.BaseViewModel
 import com.beotkkot.tamhumhajang.data.ApiRepository
 import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
-import com.beotkkot.tamhumhajang.data.di.PersistenceModule
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
@@ -26,7 +25,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getProfile() = viewModelScope.launch {
-        val userId = runBlocking { dataStoreRepository.getIntValue(PersistenceModule.USER_ID).first() }
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
 
         apiRepository.getProfile(userId).onStart {
             updateState(currentState.copy(isLoading = false))
