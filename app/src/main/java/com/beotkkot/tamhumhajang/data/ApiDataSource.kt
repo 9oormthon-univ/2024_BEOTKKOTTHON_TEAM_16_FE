@@ -42,6 +42,19 @@ class ApiDataSource @Inject constructor(
         emit(apiService.getBadge(userId, sequence))
     }.flowOn(ioDispatcher)
 
+    fun postTouch(
+        userId: Int
+    ) = flow {
+        emit(apiService.postTouch(userId))
+    }.flowOn(ioDispatcher)
+
+    fun postBookmark(
+        userId: Int,
+        shopId: Int
+    ) = flow {
+        emit(apiService.postBookmark(userId, shopId))
+    }.flowOn(ioDispatcher)
+
     fun getProfile(
         userId: Int
     ) = flow {

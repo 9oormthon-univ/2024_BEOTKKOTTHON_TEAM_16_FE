@@ -6,6 +6,7 @@ import com.beotkkot.tamhumhajang.common.UiEvent
 import com.beotkkot.tamhumhajang.common.UiState
 import com.beotkkot.tamhumhajang.data.model.Quest
 import com.beotkkot.tamhumhajang.data.model.RecommendMarket
+import com.beotkkot.tamhumhajang.data.model.response.BadgePopup
 import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
 import com.beotkkot.tamhumhajang.data.model.response.Shop
 import com.beotkkot.tamhumhajang.ui.toast.ToastType
@@ -30,6 +31,11 @@ class MapContract {
         val badgePosition: BadgePosition? = null,
 
         val showFirstBadgePopup: Boolean = true,
+
+        val showBadgePopup: Boolean = false,
+        val badgePopup: BadgePopup? = null,
+
+        val showConnectionPopup: Boolean = false,
 
         val showRecommendMarketPopup: Boolean = false,
         val recommendMarkets: List<RecommendMarket> = emptyList(),

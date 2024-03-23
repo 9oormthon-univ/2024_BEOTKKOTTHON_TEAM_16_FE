@@ -15,6 +15,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +46,8 @@ fun ShopBottomSheet(
     onBookmark: (Int) -> Unit = { }
 ) {
     val context = LocalContext.current
+    
+    var isItemBookmarked by remember { mutableStateOf(isBookmarked)}
 
     Column(
         modifier = Modifier
@@ -65,13 +71,14 @@ fun ShopBottomSheet(
             Icon(
                 modifier = Modifier.clickable {
                     onBookmark(id)
+                    isItemBookmarked = !isItemBookmarked
                 }.align(Alignment.CenterEnd),
                 painter = painterResource(id = R.drawable.ic_bookmark),
                 contentDescription = "IC_BOOKMARK",
-                tint = if (isBookmarked) {
+                tint = if (isItemBookmarked) {
                     Color(0xFFFFE266)
                 } else {
-                    TamhumhajangTheme.colors.color_bebebe
+                    Color(0xFFC6C6C6)
                 }
             )
         }

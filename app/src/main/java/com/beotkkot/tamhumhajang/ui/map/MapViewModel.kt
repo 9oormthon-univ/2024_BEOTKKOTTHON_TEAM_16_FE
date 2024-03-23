@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
@@ -12,6 +13,7 @@ import com.beotkkot.tamhumhajang.data.DataStoreRepository
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.SEQUENCE
 import com.beotkkot.tamhumhajang.data.di.PersistenceModule.USER_ID
+import com.beotkkot.tamhumhajang.data.model.PopupType
 import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
 import com.beotkkot.tamhumhajang.ui.toast.ToastType
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -61,7 +63,7 @@ class MapViewModel @Inject constructor(
         getShopsLocation()
     }
 
-    fun checkIsNearMarker() {
+    fun checkIsNearMarker() = viewModelScope.launch {
         val badgePosition = currentState.badgePosition
 
         badgePosition?.let {
@@ -73,18 +75,104 @@ class MapViewModel @Inject constructor(
                 userPosition.longitude >= badgePosition.longitude - 0.00005 &&
                 userPosition.longitude <= badgePosition.longitude + 0.00005
             ) {
+                updateState(currentState.copy(badgePosition = null))
+
                 touch()
-            } else {
-                return
             }
         }
-
-        return
     }
 
-    fun touch() {
-        postEffect(MapContract.Effect.ShowSnackBar("뱃지 획득"))
+    fun getItemBadge() = viewModelScope.launch {
+        val sequence = currentState.sequence
+
+        updateState(currentState.copy(sequence = sequence + 1))
+        runBlocking { dataStoreRepository.setIntValue(SEQUENCE, sequence + 1) }
     }
+
+    fun touch() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        apiRepository.postTouch(userId).collect {
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data
+
+                    getItemBadge()
+
+                    Log.d("debugging", "뱃지 획득 : $result")
+
+
+                    if (result.id % 3 == 0) {
+                        // TODO 레벨업 API 호출
+                    }
+
+                    when (result.popupType) {
+                        PopupType.APP -> {
+                            updateState(
+                                currentState.copy(
+                                    showBadgePopup = true,
+                                    badgePopup = result.badgePopup
+                                )
+                            )
+                        }
+
+                        PopupType.Location -> {
+                            updateState(
+                                currentState.copy(
+                                    showBadgePopup = true,
+                                    badgePopup = result.badgePopup,
+                                    badgePosition = null
+                                )
+                            )
+                        }
+
+                        PopupType.Quiz -> {
+                            //
+                        }
+                    }
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun postBookmark(shopId: Int) = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        apiRepository.postBookmark(userId, shopId).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data
+
+                    if (result.isBookmarked) {
+                        if (currentState.sequence == 2) {
+                            touch()
+                        }
+                    }
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(MapContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
 
     fun getShopsLocation() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
@@ -97,16 +185,7 @@ class MapViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data.shops
 
-                    // 임시로 배지 포지션을 두번째 샵으로 설정
-                    updateState(
-                        currentState.copy(
-                            shops = result,
-                            badgePosition = BadgePosition(
-                                37.7455536,
-                                127.058932
-                            )
-                        )
-                    )
+                    updateState(currentState.copy(shops = result))
                 }
 
                 is ApiResult.ApiError -> {
@@ -210,6 +289,18 @@ class MapViewModel @Inject constructor(
 
     fun updateShowFirstBadgePopup(isShow: Boolean) {
         updateState(currentState.copy(showFirstBadgePopup = isShow))
+    }
+
+    fun updateShowBadgePopup(isShow: Boolean) {
+        updateState(currentState.copy(showBadgePopup = isShow))
+    }
+
+    fun updateShowConnenctionPopup(isShow: Boolean) {
+        updateState(currentState.copy(showConnectionPopup = isShow))
+    }
+
+    fun updateBadgePosition(badgePosition: BadgePosition?) {
+        updateState(currentState.copy(badgePosition = badgePosition))
     }
 
     fun updateShowRecommendShopPopup(isShow: Boolean) {

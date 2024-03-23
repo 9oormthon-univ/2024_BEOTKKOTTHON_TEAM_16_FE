@@ -27,6 +27,15 @@ class ApiRepository @Inject constructor(
         sequence: Int
     ) = apiDataSource.getBadge(userId, sequence)
 
+    fun postTouch(
+        userId: Int
+    ) = apiDataSource.postTouch(userId)
+
+    fun postBookmark(
+        userId: Int,
+        shopId: Int
+    ) = apiDataSource.postBookmark(userId, shopId)
+
     fun getProfile(
         userId: Int
     ) = apiDataSource.getProfile(userId)

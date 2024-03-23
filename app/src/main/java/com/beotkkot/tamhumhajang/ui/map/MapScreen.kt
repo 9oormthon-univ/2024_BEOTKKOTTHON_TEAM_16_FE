@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,10 +34,13 @@ import com.beotkkot.kakaomap_compose.state.rememberCameraPositionState
 import com.beotkkot.tamhumhajang.AppState
 import com.beotkkot.tamhumhajang.BottomSheetState
 import com.beotkkot.tamhumhajang.R
+import com.beotkkot.tamhumhajang.data.model.response.BadgePosition
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 import com.beotkkot.tamhumhajang.ui.BOOKMARK
 import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.bookmark.ShopBottomSheet
+import com.beotkkot.tamhumhajang.ui.popup.BadgePopup
+import com.beotkkot.tamhumhajang.ui.popup.ConnectionPopup
 import com.beotkkot.tamhumhajang.ui.popup.FirstBadgePopup
 import com.beotkkot.tamhumhajang.ui.popup.QuestListPopup
 import com.beotkkot.tamhumhajang.ui.popup.RecommendMarketPopup
@@ -101,6 +105,9 @@ fun MapScreen(
             }
 
             is MovingCameraWrapper.MOVING -> {
+                Log.d("debugging", "위치 이동 : ${movingCameraPosition.location.latitude} ${movingCameraPosition.location.longitude}")
+
+
                 cameraPositionState.move(
                     CameraUpdateFactory.newCenterPosition(LatLng.from(movingCameraPosition.location.latitude, movingCameraPosition.location.longitude)),
                     CameraAnimation.from(100, true, true)
@@ -138,9 +145,28 @@ fun MapScreen(
         RecommendMarketPopup(
             markets = uiState.recommendMarkets,
             onClose = {
+                if (uiState.sequence == 1) {
+                    viewModel.updateBadgePosition(
+                        badgePosition = BadgePosition(
+                            uiState.recommendMarkets[1].latitude,
+                            uiState.recommendMarkets[1].longitude
+                        )
+                    )
+                }
                 viewModel.updateShowRecommendShopPopup(false)
             },
             onClick = { latitude, longitude ->
+                Log.d("debugging", "시장 : ${uiState.recommendMarkets[1]}")
+                Log.d("debugging", "뱃지 획득 갯수 : ${uiState.sequence}")
+
+                if (uiState.sequence == 1) {
+                    viewModel.updateBadgePosition(
+                        badgePosition = BadgePosition(
+                            uiState.recommendMarkets[1].latitude,
+                            uiState.recommendMarkets[1].longitude
+                        )
+                    )
+                }
                 viewModel.updateShowRecommendShopPopup(false)
                 appState.scope.launch {
                     cameraPositionState.move(
@@ -183,16 +209,55 @@ fun MapScreen(
     if (uiState.showFirstBadgePopup) {
         FirstBadgePopup(
             onClick = {
+                viewModel.getItemBadge()
                 viewModel.updateShowFirstBadgePopup(false)
                 viewModel.showRecommendMarkets()
             },
             onClose = {
+                viewModel.getItemBadge()
                 viewModel.updateShowFirstBadgePopup(false)
                 viewModel.showRecommendMarkets()
             }
         )
     }
     
+    if (uiState.showBadgePopup) {
+        Log.d("debugging", "뱃지 획득 갯수 : ${uiState.sequence}")
+
+        BadgePopup(
+            onConfirm = {
+                if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
+                viewModel.updateShowBadgePopup(false)
+            },
+            navigateToProfile = {
+                appState.navigate(PROFILE)
+            },
+            onClose = {
+                if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
+                viewModel.updateShowBadgePopup(false)
+            }
+        )
+    }
+
+    if (uiState.showConnectionPopup) {
+        ConnectionPopup {
+            viewModel.updateShowConnenctionPopup(false)
+            viewModel.updateToastOnClick {
+                viewModel.updateShowingToast(ToastType.BOOKMARK)
+                viewModel.updateToastName("마음에 드는 상점을 Click해서\n즐겨찾기로 등록해보아요!")
+                viewModel.updateToastOnClick { viewModel.updateShowingToast(null) }
+            }
+        }
+    }
+
+    LaunchedEffect(uiState.badgePosition) {
+        while (true) {
+            delay(5000)
+
+            viewModel.checkIsNearMarker()
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -237,6 +302,7 @@ fun MapScreen(
                                 imgUrl = shop.imgUrl,
                                 tags = shop.tags
                             ) {
+                                viewModel.postBookmark(shop.id)
                                 // TODO : 북마크 API 연동
                             }
                         }

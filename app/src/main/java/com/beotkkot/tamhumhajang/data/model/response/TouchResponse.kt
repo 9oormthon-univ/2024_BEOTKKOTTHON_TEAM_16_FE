@@ -1,45 +1,40 @@
 package com.beotkkot.tamhumhajang.data.model.response
 
+import com.beotkkot.tamhumhajang.data.model.PopupType
+import com.google.gson.annotations.SerializedName
+
+/**
+ * id % 3 == 0 이면 레벨업 API 호출
+ *
+ *
+ * type == PopupType.APP 인 경우 badgePopup만 확인
+ * type == PopupType.LOCATION 인 경우 badgePopup만 확인
+ *
+ * type == PopupType.QUIZ 인 경우 badgePopup, quizPopup 둘 다 확인
+ */
 data class TouchResponse(
-    val type: String,
+    @SerializedName("popupType")
+    val popupType: PopupType,
+    @SerializedName("id")
     val id: Int, // 현재 수행 중인 퀘스트
-    val nextId: Int, // 다음 수행해야할 퀘스트
 
+    //@SerializedName("badgePosition")
+    //val badgePosition: BadgePosition?,
+
+    @SerializedName("badgePopup")
     val badgePopup: BadgePopup?,
-    val levelUpPopup: LevelUpPopup?,
+    @SerializedName("quizPopup")
     val quizPopup: QuizPopup?,
-
-    val name: String,   // 팝업 이름
-    val popupDescription: String,   // 팝업 제목
-    val profileDescription: String?, // 팝업 설명
-    val image: String, // 팝업 이미지
-
-    val latitude: Double?,
-    val longitude: Double?,
-
-    val quizConfirmText: String,
-    val quizWarningTitle: String,
-    val quizWarningImage: String,
-
-    val quizQuestion: String,
-    val quizPositive: String,
-    val quizNegative: String
 )
 
 data class BadgePopup(
     // 이어서 탐험하기, 도감 이동하기 고정이어서 버튼 텍스트는 안 내려줌
+    @SerializedName("title")
     val title: String,
+    @SerializedName("description")
     val description: String,
+    @SerializedName("imgUrl")
     val imgUrl: String
-)
-
-data class LevelUpPopup(
-    val tierImgUrl: String,
-    val title: String,
-    val grade: String,
-    val characterImgUrl: String,
-    val description: String
-    // 이어서 탐색하기 고정이니깐 버튼 텍스트는 안내랴줌
 )
 
 data class QuizPopup(
