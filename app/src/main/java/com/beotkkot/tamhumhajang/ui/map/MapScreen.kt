@@ -155,6 +155,7 @@ fun MapScreen(
                             uiState.recommendMarkets[1].longitude
                         )
                     )
+                    viewModel.showQuests()
                 }
                 viewModel.updateShowRecommendShopPopup(false)
             },
@@ -169,6 +170,7 @@ fun MapScreen(
                             uiState.recommendMarkets[1].longitude
                         )
                     )
+                    viewModel.showQuests()
                 }
                 viewModel.updateShowRecommendShopPopup(false)
                 appState.scope.launch {
@@ -268,10 +270,13 @@ fun MapScreen(
     if (uiState.showConnectionPopup) {
         ConnectionPopup {
             viewModel.updateShowConnenctionPopup(false)
-            viewModel.updateToastOnClick {
-                viewModel.updateShowingToast(ToastType.BOOKMARK)
-                viewModel.updateToastName("마음에 드는 상점을 Click해서\n즐겨찾기로 등록해보아요!")
-                viewModel.updateToastOnClick { viewModel.updateShowingToast(null) }
+
+            viewModel.updateShowingToast(ToastType.BOOKMARK)
+            viewModel.updateToastOnClick { viewModel.updateShowingToast(null) }
+
+            appState.scope.launch {
+                delay(5000)
+                viewModel.updateShowingToast(null)
             }
         }
     }
@@ -329,7 +334,6 @@ fun MapScreen(
                                 tags = shop.tags
                             ) {
                                 viewModel.postBookmark(shop.id)
-                                // TODO : 북마크 API 연동
                             }
                         }
                     }
@@ -408,7 +412,7 @@ fun MapScreen(
                         }
                     }
                     ToastType.BOOKMARK -> {
-                        BookmarkToast(name = uiState.toastName) {
+                        BookmarkToast {
                             uiState.toastOnClick()
                         }
                     }

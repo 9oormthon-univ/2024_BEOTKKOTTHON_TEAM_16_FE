@@ -3,7 +3,7 @@ package com.beotkkot.tamhumhajang.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class BookmarkResponse(
-    @SerializedName("bookmarked")
+    @SerializedName("isBookmarked")
     val isBookmarked: Boolean,
     @SerializedName("bookmark")
     val bookmark: Bookmark

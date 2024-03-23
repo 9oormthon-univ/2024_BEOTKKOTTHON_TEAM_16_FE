@@ -5,7 +5,6 @@ import com.beotkkot.tamhumhajang.R
 
 @Composable
 fun BookmarkToast(
-    name: String,
     onClick: () -> Unit
 ) {
     TamhumToast(

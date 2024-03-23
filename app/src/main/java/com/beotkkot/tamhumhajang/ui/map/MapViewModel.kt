@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Looper
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewModelScope
 import com.beotkkot.tamhumhajang.common.BaseViewModel
@@ -163,6 +164,8 @@ class MapViewModel @Inject constructor(
 
     fun postBookmark(shopId: Int) = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        Log.d("debugging", "북마크 시점 획득 뱃지 갯수 : ${currentState.sequence}")
 
         apiRepository.postBookmark(userId, shopId).onStart {
             updateState(currentState.copy(isLoading = true))
