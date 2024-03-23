@@ -130,36 +130,5 @@ fun TrophyPopup(
                 }
             }
         }
-
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceBetween
-//        ) {
-//            if (selectedMarketPosition > 0) {
-//                Icon(
-//                    modifier = Modifier
-//                        .clip(CircleShape)
-//                        .clickable { selectedMarketPosition -= 1 },
-//                    painter = painterResource(id = R.drawable.ic_arrow_left),
-//                    contentDescription = "IC_ARROW_LEFT",
-//                    tint = Color.Unspecified
-//                )
-//            } else {
-//                Spacer(modifier = Modifier.size(1.dp))
-//            }
-//
-//            if (selectedMarketPosition < markets.size - 1) {
-//                Icon(
-//                    modifier = Modifier
-//                        .clip(CircleShape)
-//                        .clickable { selectedMarketPosition += 1 },
-//                    painter = painterResource(id = R.drawable.ic_arrow_right),
-//                    contentDescription = "IC_ARROW_LEFT",
-//                    tint = Color.Unspecified
-//                )
-//            } else {
-//                Spacer(modifier = Modifier.size(1.dp))
-//            }
-//        }
     }
 }

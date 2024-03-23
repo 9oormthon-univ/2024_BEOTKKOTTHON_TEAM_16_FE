@@ -130,7 +130,7 @@ private fun QuestItem(
 
         Column {
             Text(
-                text = quest.name,
+                text = if (quest.isAcquired) quest.name else quest.description,
                 style = TamhumhajangTheme.typography.body2.copy(
                     color = if (quest.isAcquired) {
                         TamhumhajangTheme.colors.color_ffffff

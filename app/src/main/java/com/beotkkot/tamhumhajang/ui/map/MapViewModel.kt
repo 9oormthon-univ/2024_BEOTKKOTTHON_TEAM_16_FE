@@ -314,7 +314,7 @@ class MapViewModel @Inject constructor(
         updateState(currentState.copy(showBadgePopup = isShow))
     }
 
-    fun updateShowConnenctionPopup(isShow: Boolean) {
+    fun updateShowConnectionPopup(isShow: Boolean) {
         updateState(currentState.copy(showConnectionPopup = isShow))
     }
 
@@ -335,7 +335,7 @@ class MapViewModel @Inject constructor(
     }
 
     fun updateShowRewardPopup(isShow: Boolean) {
-        updateState(currentState.copy(showRewardPopup = true))
+        updateState(currentState.copy(showRewardPopup = isShow))
     }
 
     inner class CustomLocationCallback : LocationCallback() {

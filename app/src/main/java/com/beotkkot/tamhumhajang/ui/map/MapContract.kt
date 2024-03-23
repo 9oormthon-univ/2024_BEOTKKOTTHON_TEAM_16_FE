@@ -30,6 +30,7 @@ class MapContract {
 
         val shops: List<Shop> = emptyList(),
         val badgePosition: BadgePosition? = null,
+        val merchantAssociationPosition: BadgePosition? = null,
 
         val showFirstBadgePopup: Boolean = false,
 

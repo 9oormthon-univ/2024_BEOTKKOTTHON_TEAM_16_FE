@@ -232,14 +232,14 @@ fun MapScreen(
             BadgePopup(
                 popup = popUp,
                 onConfirm = {
-                    if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
+                    if (uiState.sequence == 2) viewModel.updateShowConnectionPopup(true)
                     viewModel.updateShowBadgePopup(false)
                 },
                 navigateToProfile = {
                     appState.navigate(PROFILE)
                 },
                 onClose = {
-                    if (uiState.sequence == 2) viewModel.updateShowConnenctionPopup(true)
+                    if (uiState.sequence == 2) viewModel.updateShowConnectionPopup(true)
                     viewModel.updateShowBadgePopup(false)
                 }
             )
@@ -264,12 +264,13 @@ fun MapScreen(
     if (uiState.showRewardPopup) {
         TrophyPopup {
             viewModel.updateShowRewardPopup(false)
+            bottomSheetState.hideBottomSheet()
         }
     }
 
     if (uiState.showConnectionPopup) {
         ConnectionPopup {
-            viewModel.updateShowConnenctionPopup(false)
+            viewModel.updateShowConnectionPopup(false)
 
             viewModel.updateShowingToast(ToastType.BOOKMARK)
             viewModel.updateToastOnClick { viewModel.updateShowingToast(null) }
@@ -345,6 +346,14 @@ fun MapScreen(
                     position = LatLng.from(it.latitude, it.longitude),
                     iconResId = R.drawable.img_badge_location,
                     tag = "뱃지"
+                )
+            }
+
+            uiState.merchantAssociationPosition?.let {
+                Label(
+                    position = LatLng.from(it.latitude, it.longitude),
+                    iconResId = R.drawable.img_merchange_association,
+                    tag = "시장 상인회"
                 )
             }
         }
