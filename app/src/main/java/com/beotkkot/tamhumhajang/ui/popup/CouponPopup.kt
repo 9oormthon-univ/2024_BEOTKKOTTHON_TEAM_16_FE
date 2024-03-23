@@ -20,8 +20,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,13 +36,22 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.beotkkot.tamhumhajang.R
 import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun CouponPopup(
     rewardId: Int,
     onClose: (Int) -> Unit = { }
 ) {
-    val isButtonClicked = remember { mutableStateOf(false) }
+    var isButtonClicked by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isButtonClicked) {
+        if (isButtonClicked) {
+            delay(3000)
+            onClose(rewardId)
+        }
+    }
+
     Dialog(
         onDismissRequest = { onClose(rewardId) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -136,14 +148,16 @@ fun CouponPopup(
                             .height(40.dp),
                         shape = RoundedCornerShape(15.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (isButtonClicked.value) Color(0xD9D9D9) else Color(0xFFAC93F4),
+                            backgroundColor = if (isButtonClicked) Color(0xFFD9D9D9) else Color(0xFFAC93F4),
                             contentColor = TamhumhajangTheme.colors.color_ffffff
                         ),
                         contentPadding = PaddingValues(vertical = 10.dp),
-                        onClick = { onClose(rewardId) }
+                        onClick = {
+                            isButtonClicked = true
+                        }
                     ) {
                         Text(
-                            text = "트로피 사용하기",
+                            text = if (isButtonClicked) "트로피 사용 완료" else "트로피 사용하기",
                             style = TamhumhajangTheme.typography.body2,
                             color = TamhumhajangTheme.colors.color_ffffff
                         )

@@ -3,10 +3,12 @@ package com.beotkkot.tamhumhajang.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class ErrorResponse(
-    @SerializedName("errorCode")
-    val errorCode: String,
-    @SerializedName("message")
+    @SerializedName("timeStamp")
+    val timeStamp: String,
+    @SerializedName("status")
+    val status: Int,
+    @SerializedName("error")
     val message: String,
-    @SerializedName("cause")
-    val cause: String
+    @SerializedName("path")
+    val path: String
 )

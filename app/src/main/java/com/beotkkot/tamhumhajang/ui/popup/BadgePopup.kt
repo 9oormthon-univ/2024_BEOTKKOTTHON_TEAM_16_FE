@@ -35,6 +35,7 @@ fun BadgePopup(
     navigateToProfile: () -> Unit,
     onClose: () -> Unit
 ) {
+
     val context = LocalContext.current
 
     Dialog(

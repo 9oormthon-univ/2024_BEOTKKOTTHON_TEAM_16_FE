@@ -48,6 +48,12 @@ class ApiDataSource @Inject constructor(
         emit(apiService.postTouch(userId))
     }.flowOn(ioDispatcher)
 
+    fun getBookmarks(
+        userId: Int
+    ) = flow {
+        emit(apiService.getBookmarks(userId))
+    }.flowOn(ioDispatcher)
+
     fun postBookmark(
         userId: Int,
         shopId: Int

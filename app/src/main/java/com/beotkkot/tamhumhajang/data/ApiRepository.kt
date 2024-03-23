@@ -31,6 +31,10 @@ class ApiRepository @Inject constructor(
         userId: Int
     ) = apiDataSource.postTouch(userId)
 
+    fun getBookmarks(
+        userId: Int
+    ) = apiDataSource.getBookmarks(userId)
+
     fun postBookmark(
         userId: Int,
         shopId: Int

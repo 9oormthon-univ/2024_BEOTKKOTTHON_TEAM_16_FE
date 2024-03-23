@@ -28,6 +28,7 @@ import com.beotkkot.tamhumhajang.ui.PROFILE
 import com.beotkkot.tamhumhajang.ui.SPLASH
 import com.beotkkot.tamhumhajang.ui.SplashScreen
 import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkScreen
+import com.beotkkot.tamhumhajang.ui.bookmark.BookmarkViewModel
 import com.beotkkot.tamhumhajang.ui.login.LoginScreen
 import com.beotkkot.tamhumhajang.ui.login.LoginViewModel
 import com.beotkkot.tamhumhajang.ui.map.MapScreen
@@ -104,9 +105,12 @@ fun NavHost() {
                 }
 
                 composable(BOOKMARK) {
+                    val viewModel: BookmarkViewModel = hiltViewModel()
+
                     BookmarkScreen(
                         appState = appState,
-                        bottomSheetState = bottomSheetState
+                        bottomSheetState = bottomSheetState,
+                        viewModel = viewModel
                     )
                 }
 

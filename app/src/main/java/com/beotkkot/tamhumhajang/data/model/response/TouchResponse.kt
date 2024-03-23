@@ -18,8 +18,8 @@ data class TouchResponse(
     @SerializedName("itemId")
     val id: Int, // 현재 수행 중인 퀘스트
 
-    //@SerializedName("badgePosition")
-    //val badgePosition: BadgePosition?,
+    @SerializedName("badgePosition")
+    val badgePosition: BadgePosition?,
 
     @SerializedName("badgePopup")
     val badgePopup: BadgePopup?,

@@ -2,6 +2,7 @@ package com.beotkkot.tamhumhajang.data
 
 import com.beotkkot.tamhumhajang.data.adapter.ApiResult
 import com.beotkkot.tamhumhajang.data.model.response.BadgeResponse
+import com.beotkkot.tamhumhajang.data.model.response.BookmarkListResponse
 import com.beotkkot.tamhumhajang.data.model.response.BookmarkResponse
 import com.beotkkot.tamhumhajang.data.model.response.LevelUpResponse
 import com.beotkkot.tamhumhajang.data.model.response.LoginResponse
@@ -47,6 +48,11 @@ interface ApiService {
     suspend fun postTouch(
         @Path("userId") userId: Int
     ): ApiResult<TouchResponse>
+
+    @GET("users/{userId}/bookmarks")
+    suspend fun getBookmarks(
+        @Path("userId") userId: Int
+    ): ApiResult<BookmarkListResponse>
 
     @POST("users/{userId}/bookmarks/{shopId}")
     suspend fun postBookmark(

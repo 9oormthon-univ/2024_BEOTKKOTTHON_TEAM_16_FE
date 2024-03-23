@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.beotkkot.tamhumhajang.AppState
@@ -33,8 +37,25 @@ import com.beotkkot.tamhumhajang.design.theme.TamhumhajangTheme
 @Composable
 fun BookmarkScreen(
     appState: AppState,
-    bottomSheetState: BottomSheetState
+    bottomSheetState: BottomSheetState,
+    viewModel: BookmarkViewModel
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        effectFlow.collect {
+            when (it) {
+                is BookmarkContract.Effect.NavigateTo -> {
+                    appState.navigate(it.destination)
+                }
+                is BookmarkContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(it.message)
+                }
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,8 +68,14 @@ fun BookmarkScreen(
         }
 
         LazyColumn {
-            items(10) {
-                ShopItem()
+            items(uiState.shops) { shop ->
+                ShopItem(
+                    id = shop.id,
+                    name = shop.name,
+                    address = shop.name,
+                    category = shop.category,
+                    imgUrl = shop.imgUrl
+                )
             }
         }
     }
